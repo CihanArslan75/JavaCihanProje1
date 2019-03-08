@@ -18,13 +18,14 @@ public class Product {
 
 	private Integer id;
 	private String productName;
-	private String productColor;
 	private Date productDate;
 	private MarkaList productMark;
 	private Integer deleteUser;
 	private Date deleteDate;
 	private Integer updateUser;
 	private Date updateDate;
+	private Integer insertUser;
+	private Date insertDate;
 	private ProductType productType;
 	private Integer durum;
 	
@@ -47,15 +48,6 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
-	}
-
-	@Column(length = 100, name = "productcolor")
-	public String getProductColor() {
-		return productColor;
-	}
-
-	public void setProductColor(String productColor) {
-		this.productColor = productColor;
 	}
 
 	@Column(name = "productdate")
@@ -120,6 +112,22 @@ public class Product {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+	@Column(name = "insertuser")
+	public Integer getInsertUser() {
+		return insertUser;
+	}
+
+	public void setInsertUser(Integer insertUser) {
+		this.insertUser = insertUser;
+	}
+	@Column(name = "insertdate")
+	public Date getInsertDate() {
+		return insertDate;
+	}
+
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
 	}
 	@Column(name = "durum")
 	public Integer getDurum() {

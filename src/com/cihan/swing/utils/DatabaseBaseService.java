@@ -237,6 +237,24 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
     }
     
     
+    @Override
+    public List<T> searchDate(String columnName, Date date1,Date date2, T t)   {
+        try 
+        {
+            openSession();
+            Criteria cr = ss.createCriteria(t.getClass());
+            cr.add(Restrictions.between(columnName, date1,date2));
+            List<T> list = cr.list();
+            closeSession();
+            return list;
+        }   
+        catch (Exception e) 
+        {
+            logProduct("searchDate  ; "  + t.getClass()+" ; "+e.getMessage() );
+            return null;
+        }
+        
+    }
     
      public void logProduct(String text) {
     	 LogProduct logProduct=new LogProduct();

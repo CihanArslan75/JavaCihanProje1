@@ -20,6 +20,7 @@ public class ProductStock {
 	private Integer count;
 	private Integer unitPrize;
 	private SizeList sizeList;
+	private ColorList productColor;
 	private Integer deleteUser;
 	private Date deleteDate;
 	private Integer updateUser;
@@ -65,7 +66,6 @@ public class ProductStock {
 	public void setUnitPrize(Integer unitPrize) {
 		this.unitPrize = unitPrize;
 	}
-
 	
 	@Column(name = "productsizeno")
 	public SizeList getSizeList() {
@@ -74,6 +74,15 @@ public class ProductStock {
 
 	public void setSizeList(SizeList sizeList) {
 		this.sizeList = sizeList;
+	}
+	
+	@Column(name = "productcolor")
+	public ColorList getProductColor() {
+		return productColor;
+	}
+
+	public void setProductColor(ColorList productColor) {
+		this.productColor = productColor;
 	}
 
 	@Column(name = "deleteuser")

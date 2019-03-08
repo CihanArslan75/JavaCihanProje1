@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
 
 
 public class ProductFrame extends JFrame{
@@ -166,12 +168,12 @@ public class ProductFrame extends JFrame{
 	private void initTableProduct() {
 		 table1.setModel(new javax.swing.table.DefaultTableModel(
 	             new Object [][] {
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null}
+	                 {null, null, null, null, null},
+	                 {null, null, null, null, null},
+	                 {null, null, null, null, null},
+	                 {null, null, null, null, null}
 	             },
-	             new String [] {"NO","Marka","Ürün Tipi","Ürün Adı","Renk","Üretim Tarihi" }
+	             new String [] {"NO","Marka","Ürün Tipi","Ürün Adı","Üretim Tarihi" }
 	         ));
 	    scrollPane1.setViewportView(table1);
 	}
@@ -184,7 +186,7 @@ public class ProductFrame extends JFrame{
 	                 {null, null, null, null, null},
 	                 {null, null, null, null, null}
 	             },
-	             new String [] {"Ürün Stok NO","Ürün Adı","Ürün Beden","Ürün Adedi","Birim Fiyatı"}
+	             new String [] {"Ürün Stok NO","Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı"}
 	         ));
 	    scrollPane2.setViewportView(table2);
 	}
@@ -194,7 +196,7 @@ public class ProductFrame extends JFrame{
 		product.setProductName(txtProductSearch.getText());
 		product.setDurum(1);
 		productList=productService.search(product);
-		String[] columnNames1= {"NO","Marka","Ürün Tipi","Ürün Adı","Renk","Üretim Tarihi" };
+		String[] columnNames1= {"NO","Marka","Ürün Tipi","Ürün Adı","Ürün Renk","Üretim Tarihi" };
 		String[][] data1 = new String[productList.size()][6];
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -217,14 +219,10 @@ public class ProductFrame extends JFrame{
 				data1[i][3] = productList.get(i).getProductName();
 			else 
 				data1[i][3]=null;
-			if(productList.get(i).getProductColor()!=null) 
-				data1[i][4] = productList.get(i).getProductColor();
+			if(productList.get(i).getProductDate()!=null) 
+				data1[i][4]=sdf.format(productList.get(i).getProductDate());
 			else 
 				data1[i][4]=null;
-			if(productList.get(i).getProductDate()!=null) 
-				data1[i][5]=sdf.format(productList.get(i).getProductDate());
-			else 
-				data1[i][5]=null;
 		
 			}
 			table1 = new JTable(data1,columnNames1);
@@ -251,7 +249,7 @@ public class ProductFrame extends JFrame{
 		productStock.setProduct(product);
 		productStock.setDurum(1);
 		List<ProductStock> productStockList=productStockService.searchIdAll(productStock);
-		String[] columnNames2= {"Ürün Stok NO","Ürün Adı","Ürün Beden","Ürün Adedi","Birim Fiyatı"};
+		String[] columnNames2= {"Ürün Stok NO","Ürün Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı"};
 		String[][] data2 = new String[productStockList.size()][5];
 				
 		for (int i = 0; i < productStockList.size(); i++) {
@@ -260,8 +258,8 @@ public class ProductFrame extends JFrame{
 				data2[i][0] = ""+productStockList.get(i).getId(); 
 			else 
 				data2[i][0]=null;
-			if(productStockList.get(i).getProduct().getProductName()!=null) 
-				data2[i][1] = productStockList.get(i).getProduct().getProductName();
+			if(productStockList.get(i).getProductColor()!=null) 
+				data2[i][1] = ""+productStockList.get(i).getProductColor();
 			else 
 				data2[i][1]=null;
 			if(productStockList.get(i).getSizeList()!=null) 

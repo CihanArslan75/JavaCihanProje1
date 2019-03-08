@@ -1,5 +1,6 @@
 package com.cihan.swing.utils;
 
+import java.util.Date;
 import java.util.List;
 
 /** @author Cihan    */
@@ -14,5 +15,5 @@ public interface IDatabase<T> {
     public List<T> searchAll(String columnName, String search ,T t)  throws Exception;
     public List<T> searchIdAll(T t);
     public List<T> search(T t)  ;
-       
+    public List<T> searchDate(String columnName, Date date1,Date date2, T t);   
 }

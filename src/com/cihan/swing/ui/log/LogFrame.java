@@ -20,7 +20,9 @@ import java.util.List;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class LogFrame extends JFrame{
 	
@@ -29,7 +31,10 @@ public class LogFrame extends JFrame{
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	DatabaseBaseService<LogProduct> logServis=new DatabaseBaseService<LogProduct>();
-	List<LogProduct> logList;
+	private List<LogProduct> logList;
+	private JDateChooser dateLog1;
+	private JDateChooser dateLog2 ;
+	
 	 
 	public LogFrame() {
 		initializeLogFrame();
@@ -68,7 +73,7 @@ public class LogFrame extends JFrame{
 				getTable();
 			}
 		});
-		btnAra.setBounds(134, 35, 97, 25);
+		btnAra.setBounds(390, 37, 97, 25);
 		getContentPane().add(btnAra);
 		
 		JButton btnMenu = new JButton("MENÜYE DÖN");
@@ -82,50 +87,71 @@ public class LogFrame extends JFrame{
 		btnMenu.setBounds(753, 595, 164, 25);
 		getContentPane().add(btnMenu);
 		
+		dateLog1 = new JDateChooser();
+		dateLog1.setBounds(20, 37, 140, 22);
+		dateLog1.setDateFormatString("dd/MM/yyyy");
+		getContentPane().add(dateLog1);
+		
+		dateLog2 = new JDateChooser();
+		dateLog2.setBounds(199, 37, 140, 22);
+		dateLog2.setDateFormatString("dd/MM/yyyy");
+		getContentPane().add(dateLog2);
+		
 	}
 	
 	private void initTableLog() {
 		 table.setModel(new javax.swing.table.DefaultTableModel(
 	             new Object [][] {
-	                 {null, null, null},
-	                 {null, null, null},
-	                 {null, null, null},
-	                 {null, null, null}
+	                 {null,null, null, null},
+	                 {null,null, null, null},
+	                 {null,null, null, null},
+	                 {null,null, null, null}
 	             },
-	             new String [] {"Kullanıcı","Tarih ","Hata Mesajı "}
+	             new String [] {"","Kullanıcı","Tarih ","Hata Mesajı "}
 	         ));
 		
-		 table.getColumnModel().getColumn(0).setMaxWidth(100);
-		 table.getColumnModel().getColumn(1).setMaxWidth(150);
-		 table.getColumnModel().getColumn(2).setMaxWidth(800);
+		 table.getColumnModel().getColumn(0).setMaxWidth(50);
+		 table.getColumnModel().getColumn(1).setMaxWidth(100);
+		 table.getColumnModel().getColumn(2).setMaxWidth(150);
+		 table.getColumnModel().getColumn(3).setMaxWidth(700);
 		 table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		 scrollPane.setViewportView(table);
 	}
 	
 	private void getTable() {
-		logList=logServis.search(new LogProduct());
-		String[] columnNames= {"Kullanıcı","Tarih ","Hata Mesajı "};
-		String[][] data = new String[logList.size()][6];
+		if(dateLog1.getDate()!=null && dateLog2.getDate()!=null) {
+			logList=logServis.searchDate("logDate",dateLog1.getDate(),dateLog2.getDate(),new LogProduct());
+		}
+		else
+		{
+			logList=logServis.search(new LogProduct());
+		}
+		String[] columnNames= {"","Kullanıcı","Tarih ","Hata Mesajı "};
+		String[][] data = new String[logList.size()][4];
+		int sayi=0;
 		for (int i = 0; i < logList.size(); i++) {
+			sayi++;
+			    data[i][0] = ""+sayi; 
   		  if(logList.get(i).getUser().getUsername()!=null) 
-				data[i][0] = logList.get(i).getUser().getUsername(); 
+				data[i][1] = logList.get(i).getUser().getUsername(); 
 			else 
-				data[i][0]=null;
+				data[i][1]=null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             if(logList.get(i).getLogDate()!=null) 
-             	data[i][1]=sdf.format(logList.get(i).getLogDate());
+             	data[i][2]=sdf.format(logList.get(i).getLogDate());
             else 
-				data[i][1]=null;
-			if(logList.get(i).getText()!=null) 
-				data[i][2] = logList.get(i).getText();
-			else 
 				data[i][2]=null;
+			if(logList.get(i).getText()!=null) 
+				data[i][3] = logList.get(i).getText();
+			else 
+				data[i][3]=null;
 			
 		}
 		table = new JTable(data,columnNames);
-		table.getColumnModel().getColumn(0).setMaxWidth(100);
-		table.getColumnModel().getColumn(1).setMaxWidth(150);
-		table.getColumnModel().getColumn(2).setMaxWidth(800);
+		 table.getColumnModel().getColumn(0).setMaxWidth(50);
+		 table.getColumnModel().getColumn(1).setMaxWidth(100);
+		 table.getColumnModel().getColumn(2).setMaxWidth(150);
+		 table.getColumnModel().getColumn(3).setMaxWidth(700);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		scrollPane.setViewportView(table);
 		
