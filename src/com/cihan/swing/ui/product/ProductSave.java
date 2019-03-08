@@ -17,8 +17,6 @@ import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
 import com.toedter.calendar.JDateChooser;
 
-import Ornek4.Personel;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.DefaultComboBoxModel;
@@ -222,13 +220,13 @@ public class ProductSave extends JFrame {
 //			cmbType.insertItemAt(productTypeList.get(i).getProductTypeName(),i);
 //		}
 		
-		DefaultComboBoxModel model = new DefaultComboBoxModel((ProductType)productTypeList);
-		cmbType.setModel(model);
-		cmbType.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				int id=((ProductType)cmbType.getSelectedItem()).getId();
-			}
-		});
+//		DefaultComboBoxModel model = new DefaultComboBoxModel((ProductType)productTypeList);
+//		cmbType.setModel(model);
+//		cmbType.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				int id=((ProductType)cmbType.getSelectedItem()).getId();
+//			}
+//		});
 		
 	}
 	
