@@ -7,6 +7,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import com.cihan.swing.model.base.BaseEntity;
+
 import javax.persistence.SequenceGenerator;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,18 +18,14 @@ import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "usr")
-public class User {
+public class User extends BaseEntity{
 	private Integer id;
 	private String username;
 	private String password;
 	private String uname;
 	private String surname;
 	private String email;
-	private Rol rol;
-	private Date UserInsertDate;
-	private Date UserUpdateDate;
-	private Date UserDeleteDate;
-	private Integer durum;
+	private Role role;
 	
 	@Id
 	@SequenceGenerator(name = "seq_user", allocationSize = 1, sequenceName = "seq_user")
@@ -82,50 +81,14 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@Column(name = "userinsertdate")
-	public Date getUserInsertDate() {
-		return UserInsertDate;
-	}
-
-	public void setUserInsertDate(Date UserInsertDate) {
-		this.UserInsertDate = UserInsertDate;
-	}
-
-	@Column(name = "userdeletedate")
-	public Date getUserDeleteDate() {
-		return UserDeleteDate;
-	}
-
-	public void setUserDeleteDate(Date UserDeleteDate) {
-		this.UserDeleteDate = UserDeleteDate;
-	}
 	
-	public Date getUserUpdateDate() {
-		return UserUpdateDate;
-	}
-	
-	@Column(name = "userupdatedate")
-	public void setUserUpdateDate(Date userUpdateDate) {
-		UserUpdateDate = userUpdateDate;
-	}
-	
-	@Column(name = "durum")
-	public Integer getDurum() {
-		return durum;
-	}
-
-	public void setDurum(Integer durum) {
-		this.durum = durum;
-	}
-
-	
-	@Column(name = "rol_id")
+	@Column(name = "role_id")
     @Enumerated
-	public Rol getRol() {
-		return rol;
+	public Role getRol() {
+		return role;
 	}
 
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRol(Role role) {
+		this.role = role;
 	}
 }

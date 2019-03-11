@@ -1,18 +1,19 @@
 package com.cihan.swing.utils;
 
 import com.cihan.swing.model.log.LogProduct;
-import com.cihan.swing.runner.Runner;
+
 
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.Order;
+import org.hibernate.criterion.Order;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+
 
 /**
  *
@@ -140,7 +141,7 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
         {
             openSession();
             Criteria cr = ss.createCriteria(t.getClass());
-            cr.add(Restrictions.eq("durum",1));
+            cr.add(Restrictions.eq("state",1));
             cr.add(Restrictions.ilike(columnName, search));
             
             List<T> list = cr.list();
@@ -162,6 +163,7 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
             openSession();
             Criteria cr = ss.createCriteria(t.getClass());
             cr.add(Restrictions.ilike(columnName, "'%"+search+"%'"));
+            cr.addOrder(Order.desc("id"));
             List<T> list = cr.list();
             closeSession();
             return list;
@@ -220,11 +222,11 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
             for (int i = 0; i < fl.length; i++) {
                 fl[i].setAccessible(true);
                 if(fl[i].get(t)!=null && !fl[i].get(t).toString().equals("0") ){
-                	if(fl[i].getName().equals("durum")) cr.add(Restrictions.eq(fl[i].getName(),fl[i].get(t)));   // durum 2 delete , 1 normal kayıt
+                	if(fl[i].getName().equals("state")) cr.add(Restrictions.eq(fl[i].getName(),fl[i].get(t)));   // durum 2 delete , 1 normal kayıt
                     else cr.add(Restrictions.ilike(fl[i].getName(), "%"+fl[i].get(t)+"%")); 
                 }
             }
-            
+            cr.addOrder(Order.desc("id"));
             list = cr.list();
             closeSession();
             return list;
@@ -244,6 +246,7 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
             openSession();
             Criteria cr = ss.createCriteria(t.getClass());
             cr.add(Restrictions.between(columnName, date1,date2));
+            cr.addOrder(Order.desc("id"));
             List<T> list = cr.list();
             closeSession();
             return list;
@@ -259,7 +262,7 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
      public void logProduct(String text) {
     	 LogProduct logProduct=new LogProduct();
     	 logProduct.setLogDate(new Date());
-    	 logProduct.setUser(Runner.user);
+    	 logProduct.setUser(ProductUtil.user);
     	 logProduct.setText(text);
     	 save((T) logProduct);
      }

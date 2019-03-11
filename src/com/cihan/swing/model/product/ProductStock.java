@@ -11,22 +11,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.cihan.swing.model.base.BaseEntity;
+
 /** @author Cihan */
 @Entity
 @Table(name = "productstock")
-public class ProductStock {
+public class ProductStock extends BaseEntity {
 
 	private Integer id;
 	private Integer count;
 	private Integer unitPrize;
 	private SizeList sizeList;
 	private ColorList productColor;
-	private Integer deleteUser;
-	private Date deleteDate;
-	private Integer updateUser;
-	private Date updateDate;
+	private Integer saleRate;
+	private Integer finalPrize;
 	private Product product;
-	private Integer durum;
 
 	@Id
 	@SequenceGenerator(name = "seq_productstock", allocationSize = 1, sequenceName = "seq_productstock")
@@ -84,50 +83,21 @@ public class ProductStock {
 	public void setProductColor(ColorList productColor) {
 		this.productColor = productColor;
 	}
-
-	@Column(name = "deleteuser")
-	public Integer getDeleteUser() {
-		return deleteUser;
-	}
-
-	public void setDeleteUser(Integer deleteUser) {
-		this.deleteUser = deleteUser;
-	}
-
-	@Column(name = "deletedate")
-	public Date getDeleteDate() {
-		return deleteDate;
-	}
-
-	public void setDeleteDate(Date deleteDate) {
-		this.deleteDate = deleteDate;
-	}
-
-	@Column(name = "updateuser")
-	public Integer getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(Integer updateUser) {
-		this.updateUser = updateUser;
-	}
-
-	@Column(name = "updatedate")
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
 	
-	@Column(name = "durum")
-	public Integer getDurum() {
-		return durum;
+	@Column(name = "salerate")
+	public Integer getSaleRate() {
+		return saleRate;
 	}
 
-	public void setDurum(Integer durum) {
-		this.durum = durum;
+	public void setSaleRate(Integer saleRate) {
+		this.saleRate = saleRate;
+	}
+	@Column(name = "finalprize")
+	public Integer getFinalPrize() {
+		return finalPrize;
 	}
 
+	public void setFinalPrize(Integer finalPrize) {
+		this.finalPrize = finalPrize;
+	}
 }

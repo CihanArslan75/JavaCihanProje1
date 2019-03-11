@@ -12,5 +12,5 @@ public enum ColorList {
 	BEYAZ,
 	PEMBE,
 	MOR,
-    EKRU,
+    EKRU
 }

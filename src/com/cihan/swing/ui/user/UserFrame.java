@@ -13,21 +13,18 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.OptionPaneUI;
 import javax.swing.table.DefaultTableModel;
 
-import com.cihan.swing.model.user.Rol;
+import com.cihan.swing.model.user.Role;
 import com.cihan.swing.model.user.User;
-import com.cihan.swing.runner.Runner;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
+import com.cihan.swing.utils.ProductUtil;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +60,7 @@ public class UserFrame extends JFrame {
 	
 	private void initializeUserFrame() {
 		setTitle("KULLANICI İŞLEMLERİ");
-		setBounds(Runner.x1, Runner.y1, Runner.width1, Runner.height1);
+		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		c.setLayout(null);
 				
@@ -198,12 +195,19 @@ public class UserFrame extends JFrame {
 		JButton btnSave = new JButton("YENİ KAYIT");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(	userSave())
+				txtUserName.setEditable(true);
+				if(txtUserName.getText()==null) {
+					JOptionPane.showMessageDialog(UserFrame.this, "Kullanıcı Adı boş olamaz !"); 
+				}
+				else
 				{
-					JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşlemi Başarılı"); 
-					formuTemizle();
-				} else {	
-					JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşleminde Hata Oluştu !"); 
+					if(	userSave())
+					{
+						JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşlemi Başarılı"); 
+						formuTemizle();
+					} else {	
+						JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşleminde Hata Oluştu !"); 
+					}
 				}
 			
 			}
@@ -267,9 +271,9 @@ public class UserFrame extends JFrame {
 	private void getTable() {
 		User user =new User();
 		user.setUsername(txtUserFind.getText());
-		user.setDurum(1);
+		user.setState(1);
 		userList=userServis.search(user);
-		System.out.println("user.durum:"+user.getDurum());
+		System.out.println("user.durum:"+user.getState());
 		String[] columnNames= {"Kullanıcı Adı","Adı","Soyadı","Email" ,"Rol","Kayıt Tarihi"};
 		String[][] data = new String[userList.size()][6];
 		for (int i = 0; i < userList.size(); i++) {
@@ -296,8 +300,8 @@ public class UserFrame extends JFrame {
 				data[i][4]=null;
 			
 		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            if(userList.get(i).getUserInsertDate()!=null) 
-             	data[i][5]=sdf.format(userList.get(i).getUserInsertDate());
+            if(userList.get(i).getInsertDate()!=null) 
+             	data[i][5]=sdf.format(userList.get(i).getInsertDate());
             else 
 				data[i][5]=null;
 			}
@@ -345,7 +349,7 @@ public class UserFrame extends JFrame {
 	}
 	
 	private void getRolCombo() {
-	      cmbRol.setModel(new DefaultComboBoxModel(Rol.values()));
+	      cmbRol.setModel(new DefaultComboBoxModel(Role.values()));
 	 }
 	 
 	private void panel_2_remove() {
@@ -373,9 +377,10 @@ public class UserFrame extends JFrame {
 		 if(txtUname.getText()!=null)    user.setUname(txtUname.getText());
 		 if(txtSurname.getText()!=null)  user.setSurname(txtSurname.getText());
 		 if(txtEmail.getText()!=null)    user.setEmail(txtEmail.getText());
-		 if(cmbRol.getSelectedItem()!=null) user.setRol((Rol) cmbRol.getSelectedItem());
-		 user.setUserInsertDate(new Date());
-		 user.setDurum(1);
+		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
+		 user.setInsertDate(new Date());
+		 user.setInsertUser(ProductUtil.user.getId());
+		 user.setState(1);
 		 
 		 return userServis.save(user);
 		
@@ -389,9 +394,10 @@ public class UserFrame extends JFrame {
 		 if(txtUname.getText()!=null)    user.setUname(txtUname.getText());
 		 if(txtSurname.getText()!=null)  user.setSurname(txtSurname.getText());
 		 if(txtEmail.getText()!=null)    user.setEmail(txtEmail.getText());
-		 if(cmbRol.getSelectedItem()!=null) user.setRol((Rol) cmbRol.getSelectedItem());
-		 user.setUserUpdateDate(new Date());
-		 user.setDurum(1);
+		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
+		 user.setUpdateDate(new Date());
+		 user.setUpdateUser(ProductUtil.user.getId());
+		 user.setState(1);
 		 return  userServis.update(user);
 		
 			 
@@ -404,9 +410,10 @@ public class UserFrame extends JFrame {
 		 if(txtUname.getText()!=null)    user.setUname(txtUname.getText());
 		 if(txtSurname.getText()!=null)  user.setSurname(txtSurname.getText());
 		 if(txtEmail.getText()!=null)    user.setEmail(txtEmail.getText());
-		 if(cmbRol.getSelectedItem()!=null) user.setRol((Rol) cmbRol.getSelectedItem());
-		 user.setUserDeleteDate(new Date());	
-		 user.setDurum(2);  // delete kayıt
+		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
+		 user.setDeleteDate(new Date());	
+		 user.setDeleteUser(ProductUtil.user.getId());
+		 user.setState(2);  // delete kayıt
 		 return userServis.update(user);
          		 
 	 }

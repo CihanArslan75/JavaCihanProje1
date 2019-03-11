@@ -6,10 +6,10 @@ import javax.swing.JFrame;
 
 import com.cihan.swing.model.log.LogProduct;
 import com.cihan.swing.model.user.User;
-import com.cihan.swing.runner.Runner;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.ui.user.UserFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
+import com.cihan.swing.utils.ProductUtil;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,7 +44,7 @@ public class LogFrame extends JFrame{
 	
 	private void initializeLogFrame() {
 		setTitle("LOG İŞLEMLERİ");
-		setBounds(Runner.x1, Runner.y1, Runner.width1, Runner.height1);
+		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		c.setLayout(null);
 		

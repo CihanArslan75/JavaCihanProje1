@@ -4,5 +4,5 @@ public enum MarkaList {
 	LCW,
 	DEFACTO,
 	KOTON,
-	MANGO,
+	MANGO
 }

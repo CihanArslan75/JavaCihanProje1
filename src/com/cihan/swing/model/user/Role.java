@@ -1,6 +1,6 @@
 package com.cihan.swing.model.user;
 
-public enum Rol {
+public enum Role {
 	    ADMIN,
 	    PRODUCTMANAGER,
 	    PRODUCTUSER,

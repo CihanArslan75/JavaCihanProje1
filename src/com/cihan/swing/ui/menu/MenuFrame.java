@@ -7,7 +7,8 @@ import com.cihan.swing.ui.log.LogFrame;
 import com.cihan.swing.ui.product.ProductFrame;
 import com.cihan.swing.ui.user.LoginFrame;
 import com.cihan.swing.ui.user.UserFrame;
-import com.cihan.swing.runner.Runner;
+import com.cihan.swing.utils.ProductUtil;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,7 @@ public class MenuFrame extends JFrame{
 	private void initializeMenuFrame() {
 		setTitle("MENÜ");
 		getContentPane().setLayout(null);
-		setBounds(Runner.x1, Runner.y1, Runner.width1, Runner.height1);
+		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
 		setVisible(true);
 		JPanel panel = new JPanel();
 		panel.setBounds(12, 13, 520, 346);

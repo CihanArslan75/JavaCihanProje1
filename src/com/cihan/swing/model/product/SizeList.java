@@ -2,7 +2,7 @@ package com.cihan.swing.model.product;
 
 /** @author Cihan  */
 public enum SizeList {
-    XXSMALL(32),
+	XXSMALL(32),
     XSMALL(34),
     SMALL(36),   
     MEDIUM(38),     
