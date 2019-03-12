@@ -135,6 +135,7 @@ public class UserFrame extends JFrame {
 		panel_2.add(txtId);
 			
 		txtUserName = new JTextField();
+		txtUserName.setEditable(false);
 		txtUserName.setBounds(200, 30, 200, 22);
 		panel_2.add(txtUserName);
 		txtUserName.setColumns(10);
@@ -189,31 +190,8 @@ public class UserFrame extends JFrame {
 				
 			}
 		});
-		btnDelete.setBounds(100, 235, 100, 25);
+		btnDelete.setBounds(100, 235, 150, 25);
 		panel_2.add(btnDelete);
-		
-		JButton btnSave = new JButton("YENİ KAYIT");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				txtUserName.setEditable(true);
-				if(txtUserName.getText()==null) {
-					JOptionPane.showMessageDialog(UserFrame.this, "Kullanıcı Adı boş olamaz !"); 
-				}
-				else
-				{
-					if(	userSave())
-					{
-						JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşlemi Başarılı"); 
-						formuTemizle();
-					} else {	
-						JOptionPane.showMessageDialog(UserFrame.this, "Kaydetme İşleminde Hata Oluştu !"); 
-					}
-				}
-			
-			}
-		});
-		btnSave.setBounds(367, 235, 100, 25);
-		panel_2.add(btnSave);
 		
 		cmbRol = new JComboBox();
 		cmbRol.setBounds(200, 180, 200, 22);
@@ -239,7 +217,7 @@ public class UserFrame extends JFrame {
 				
 			}
 		});
-		btnUpdate.setBounds(236, 235, 97, 25);
+		btnUpdate.setBounds(330, 235, 150, 25);
 		panel_2.add(btnUpdate);
 		
 		btnMenu = new JButton("MENÜYE DÖN");

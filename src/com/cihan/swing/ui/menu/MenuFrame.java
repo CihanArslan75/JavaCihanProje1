@@ -8,6 +8,7 @@ import com.cihan.swing.ui.log.LogFrame;
 import com.cihan.swing.ui.product.ProductFrame;
 import com.cihan.swing.ui.product.ProductSave;
 import com.cihan.swing.ui.user.LoginFrame;
+import com.cihan.swing.ui.user.UserEnterFrame;
 import com.cihan.swing.ui.user.UserFrame;
 import com.cihan.swing.utils.ProductUtil;
 
@@ -18,6 +19,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuItem;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Color;
 
 public class MenuFrame extends JFrame{
 	public MenuFrame() {
@@ -26,54 +30,25 @@ public class MenuFrame extends JFrame{
 	private void initializeMenuFrame() {
 		setTitle("MENÜ");
 		getContentPane().setLayout(null);
-		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
+		setBounds(ProductUtil.x1, ProductUtil.y1, 800, 600);
 		setVisible(true);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
+		panel_1.setBounds(10, 45, 760, 436);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
 		JPanel panel = new JPanel();
-		panel.setBounds(12, 47, 520, 312);
-		getContentPane().add(panel);
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(41, 25, 688, 377);
+		panel_1.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnKullaniciMenu = new JButton("KULLANICI İŞLEMLERİ");
-		btnKullaniciMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UserFrame u=new UserFrame();
-				u.setVisible(true);
-				MenuFrame.this.setVisible(false);
-			}
-		});
-		btnKullaniciMenu.setBounds(90, 40, 300, 25);
-		panel.add(btnKullaniciMenu);
-		
-		JButton btnLogMenu = new JButton("LOG GÖRÜNTÜLEME");
-		btnLogMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				LogFrame u=new LogFrame();
-				u.setVisible(true);
-				MenuFrame.this.setVisible(false);
-			}
-		});
-		btnLogMenu.setBounds(90, 90, 300, 25);
-		panel.add(btnLogMenu);
-		
-//		JButton btnProductMenu = new JButton("ÜRÜN İŞLEMLERİ");
-//		btnProductMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				ProductFrame p=new ProductFrame();
-//				p.setVisible(true);
-//				MenuFrame.this.setVisible(false);
-//			}
-//		});
-//		btnProductMenu.setBounds(90, 140, 300, 25);
-//		panel.add(btnProductMenu);
-		
-		JButton btnExit = new JButton("MENÜDEN ÇIK");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		btnExit.setBounds(90, 190, 300, 25);
-		panel.add(btnExit);
+		JLabel lblNewLabel = new JLabel("ÜRÜN VE STOK TAKİP PROJESİ ");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblNewLabel.setBounds(106, 146, 450, 40);
+		panel.add(lblNewLabel);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 950, 26);
@@ -106,12 +81,56 @@ public class MenuFrame extends JFrame{
 		menuBar.add(mnUser);
 		
 		JMenuItem mntUser = new JMenuItem("Kullanıcı Görüntüleme ve Güncelleme");
+		mntUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserFrame p=new UserFrame();
+				p.setVisible(true);
+				MenuFrame.this.setVisible(false);
+			}
+		});
 		mnUser.add(mntUser);
+		
+		JMenuItem mntUserEnter = new JMenuItem("Kullanıcı Girişi");
+		mntUserEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserEnterFrame p=new UserEnterFrame();
+				p.setVisible(true);
+				MenuFrame.this.setVisible(false);
+			}
+		});
+		mnUser.add(mntUserEnter);
 		
 		JMenu mnLog = new JMenu("Log İşlemleri");
 		menuBar.add(mnLog);
 		
 		JMenuItem mntLog = new JMenuItem("Log Görüntüleme");
+		mntLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LogFrame p=new LogFrame();
+				p.setVisible(true);
+				MenuFrame.this.setVisible(false);
+			}
+		});
 		mnLog.add(mntLog);
+		
+//		JButton btnProductMenu = new JButton("ÜRÜN İŞLEMLERİ");
+//		btnProductMenu.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				ProductFrame p=new ProductFrame();
+//				p.setVisible(true);
+//				MenuFrame.this.setVisible(false);
+//			}
+//		});
+//		btnProductMenu.setBounds(90, 140, 300, 25);
+//		panel.add(btnProductMenu);
+		
+		JButton btnExit = new JButton("MENÜDEN ÇIK");
+		btnExit.setBounds(494, 494, 254, 25);
+		getContentPane().add(btnExit);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 	}
 }

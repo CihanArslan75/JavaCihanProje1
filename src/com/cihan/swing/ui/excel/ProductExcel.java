@@ -27,10 +27,13 @@ public class ProductExcel {
 	private  ProductStockDao productStockService=new ProductStockDao();
 		    
 	private static final String FILE_NAME = "C:\\Users\\Cihan\\Desktop\\Cihan\\UrunRaporu.xlsx";
-	private static String[] columns = {"NO","Marka","Ürün Tipi","Ürün Adı","Üretim Tarihi" ,"Ürün Stok NO","Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı","İndirim Oranı","Son Fiyat"};
-     
-	public ProductExcel() {
+	private static String[] columns = {"NO","Marka","Ürün Tipi","Ürün Adı","Üretim Tarihi" ,"Ürün Stok NO","Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı","İndirim Oranı (%)","Son Fiyat"};
+    private String productName;
+	
+	public ProductExcel(String productName) {
+		this.productName=productName;
 		initialize();
+		
 	}
     private void initialize() {      
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -77,7 +80,9 @@ public class ProductExcel {
         int rowNum = 1;
         
         Product product =new Product();
+        product.setProductName(productName);
 		product.setState(1);
+		System.out.println("productName:"+productName);
 		List<Product> productList=productService.search(product);
 		
 		for (int i = 0; i < productList.size(); i++) {
@@ -88,25 +93,58 @@ public class ProductExcel {
 		    productStock.setProduct(product);
 			List<ProductStock> productStockList=productStockService.searchIdAll(productStock);
 			for(int j=0 ;j<productStockList.size();j++) {
-				Row row = sheet.createRow(rowNum++);
-				  
+				Row row = sheet.createRow(rowNum++);		
 				row.createCell(0).setCellValue(productList.get(i).getId());
-				row.createCell(1).setCellValue(productList.get(i).getProductMark().toString());
-				row.createCell(2).setCellValue(productList.get(i).getProductType().toString());
-				row.createCell(3).setCellValue(productList.get(i).getProductName());
 				
-				 Cell dateOfCell = row.createCell(4);
-		         dateOfCell.setCellValue(productList.get(i).getProductDate());
-		         dateOfCell.setCellStyle(dateCellStyle);
-					
+				if(productList.get(i).getProductMark()!=null)
+					row.createCell(1).setCellValue(productList.get(i).getProductMark().toString());
+				else
+					row.createCell(1).setCellValue("");
+				if(productList.get(i).getProductType()!=null)
+					row.createCell(2).setCellValue(productList.get(i).getProductType().toString());
+				else
+					row.createCell(2).setCellValue("");
+				
+				if(productList.get(i).getProductName()!=null)
+					row.createCell(3).setCellValue(productList.get(i).getProductName());
+				else
+					row.createCell(3).setCellValue("");
+				if(productList.get(i).getProductDate()!=null) 
+				{
+					Cell dateOfCell = row.createCell(4);
+			        dateOfCell.setCellValue(productList.get(i).getProductDate());
+			        dateOfCell.setCellStyle(dateCellStyle);
+				}
+				else
+					row.createCell(4).setCellValue("");
+				
 				row.createCell(5).setCellValue(productStockList.get(j).getId());
-				row.createCell(6).setCellValue("");
-				//row.createCell(6).setCellValue(productStockList.get(0).getProductColor());
-				row.createCell(7).setCellValue(productStockList.get(j).getSizeList().toString());
-				row.createCell(8).setCellValue(productStockList.get(j).getCount());
-				row.createCell(9).setCellValue(productStockList.get(j).getUnitPrize());
-				row.createCell(10).setCellValue(productStockList.get(j).getSaleRate());
-				row.createCell(11).setCellValue(productStockList.get(j).getFinalPrize());
+				
+				if(productStockList.get(j).getProductColor()!=null)
+					row.createCell(6).setCellValue(productStockList.get(j).getProductColor().toString());
+				else
+					row.createCell(6).setCellValue("");
+				if(productStockList.get(j).getSizeList()!=null)
+					row.createCell(7).setCellValue(productStockList.get(j).getSizeList().toString());
+				else
+					row.createCell(7).setCellValue("");
+				
+				if(productStockList.get(j).getCount()!=null) 
+					row.createCell(8).setCellValue(productStockList.get(j).getCount());
+				else
+					row.createCell(8).setCellValue("");
+				if(productStockList.get(j).getUnitPrize()!=null)
+					row.createCell(9).setCellValue(productStockList.get(j).getUnitPrize());
+				else
+					row.createCell(9).setCellValue("");
+				if(productStockList.get(j).getSaleRate()!=null)
+					row.createCell(10).setCellValue(productStockList.get(j).getSaleRate());
+				else
+					row.createCell(10).setCellValue("");
+				if(productStockList.get(j).getFinalPrize()!=null)
+					row.createCell(11).setCellValue(productStockList.get(j).getFinalPrize());
+				else
+					row.createCell(11).setCellValue("");
 			}
 			}
 	

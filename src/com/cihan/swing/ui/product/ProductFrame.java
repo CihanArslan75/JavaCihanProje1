@@ -66,6 +66,7 @@ public class ProductFrame extends JFrame{
 	c.setLayout(null);
 	
 	panel = new JPanel();
+	panel.setBackground(Color.LIGHT_GRAY);
 	panel.setBounds(12, 13, 950, 50);
 	getContentPane().add(panel);
 	panel.setLayout(null);
@@ -102,7 +103,7 @@ public class ProductFrame extends JFrame{
 	btnExcel = new JButton("Excel Raporu");
 	btnExcel.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			ProductExcel m=new ProductExcel();
+			ProductExcel m=new ProductExcel(txtProductSearch.getText());
 			JOptionPane.showMessageDialog(ProductFrame.this, "Excel Hazırlandı !");
 		}
 	});

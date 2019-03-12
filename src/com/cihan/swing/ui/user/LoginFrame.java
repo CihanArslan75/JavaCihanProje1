@@ -17,6 +17,9 @@ import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JPasswordField;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
 
 public class LoginFrame extends JFrame {
 	private JTextField txtkadi;
@@ -28,38 +31,53 @@ public class LoginFrame extends JFrame {
 
 	private void InitializeLoginFrame() {
 		setTitle("Giriş Ekranı");
-		setBounds(100, 100, 500, 500);
+		setBounds(100, 100, 500, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
-
-		JLabel lblKullancAd = new JLabel("Kullan\u0131c\u0131 Ad\u0131 :");
-		lblKullancAd.setBounds(28, 41, 132, 16);
-		getContentPane().add(lblKullancAd);
-
-		JLabel lblSifre = new JLabel("\u015Eifre :");
-		lblSifre.setBounds(28, 90, 56, 16);
-		getContentPane().add(lblSifre);
-
-		JTextField txtUsername = new JTextField();
-		txtUsername.setText("admin");
-		txtUsername.setBounds(171, 38, 116, 22);
-		getContentPane().add(txtUsername);
-		txtUsername.setColumns(10);
-
-		JPasswordField txtPassword = new JPasswordField();
-		txtPassword.setBounds(171, 87, 116, 22);
-		getContentPane().add(txtPassword);
-		txtPassword.setColumns(10);
-
-		JButton btnEnter = new JButton("G\u0130R\u0130\u015E");
-		 btnEnter.addActionListener(new ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBounds(12, 28, 458, 291);
+		getContentPane().add(panel);
+		panel.setLayout(null);
+		
+				JLabel lblKullancAd = new JLabel("Kullan\u0131c\u0131 Ad\u0131 :");
+				lblKullancAd.setFont(new Font("Tahoma", Font.PLAIN, 15));
+				lblKullancAd.setBounds(36, 42, 132, 16);
+				panel.add(lblKullancAd);
+				
+						JTextField txtUsername = new JTextField();
+						txtUsername.setBounds(179, 39, 116, 22);
+						panel.add(txtUsername);
+						txtUsername.setColumns(10);
+						
+								JLabel lblSifre = new JLabel("\u015Eifre :");
+								lblSifre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+								lblSifre.setBounds(36, 91, 56, 16);
+								panel.add(lblSifre);
+								
+										JPasswordField txtPassword = new JPasswordField();
+										txtPassword.setBounds(179, 88, 116, 22);
+										panel.add(txtPassword);
+										txtPassword.setColumns(10);
+										
+												JButton btnCancel = new JButton("\u0130PTAL");
+												btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+												btnCancel.setBounds(83, 160, 97, 25);
+												panel.add(btnCancel);
+												
+														JButton btnEnter = new JButton("G\u0130R\u0130\u015E");
+														btnEnter.setFont(new Font("Tahoma", Font.PLAIN, 15));
+														btnEnter.setBounds(241, 160, 97, 25);
+														panel.add(btnEnter);
+														btnEnter.addActionListener(new ActionListener() {
+														public void actionPerformed(ActionEvent e) {
 			 System.out.println("aaa:"+txtUsername.getText());
-		 if(txtUsername.getText().equals("") || txtUsername.getText()==null  || txtPassword.getText().equals("") ) {
+														if(txtUsername.getText().equals("") || txtUsername.getText()==null  || txtPassword.getText().equals("") ) {
 			 JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Adı veya Şifre Boş olamaz !!");
-		 }
-		 else
-		 {
+														}
+														else
+														{
 			 DatabaseBaseService<User> userService=new DatabaseBaseService<User>();
 			 List<User> user = null;
 			 try {
@@ -118,19 +136,13 @@ public class LoginFrame extends JFrame {
 			 }
 			 
 			 }
-		 }
+														}
 		
-		 });
-		btnEnter.setBounds(233, 159, 97, 25);
-		getContentPane().add(btnEnter);
-
-		JButton btnCancel = new JButton("\u0130PTAL");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				LoginFrame.this.dispose();
-			}
-		});
-		btnCancel.setBounds(75, 159, 97, 25);
-		getContentPane().add(btnCancel);
+														});
+												btnCancel.addActionListener(new ActionListener() {
+													public void actionPerformed(ActionEvent e) {
+														LoginFrame.this.dispose();
+													}
+												});
 	}
 }
