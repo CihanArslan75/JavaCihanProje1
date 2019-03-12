@@ -46,7 +46,7 @@ public class LoginFrame extends JFrame {
 		getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
 
-		JPasswordField txtPassword = new JPasswordField(10);
+		JPasswordField txtPassword = new JPasswordField();
 		txtPassword.setBounds(171, 87, 116, 22);
 		getContentPane().add(txtPassword);
 		txtPassword.setColumns(10);

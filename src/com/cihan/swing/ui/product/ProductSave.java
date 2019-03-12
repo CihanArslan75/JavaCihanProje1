@@ -15,15 +15,8 @@ import com.cihan.swing.model.product.ProductImage;
 import com.cihan.swing.model.product.ProductStock;
 import com.cihan.swing.model.product.ProductTypeList;
 import com.cihan.swing.model.product.SizeList;
-import com.cihan.swing.model.user.Role;
-import com.cihan.swing.model.user.User;
-import com.cihan.swing.ui.menu.MenuFrame;
-import com.cihan.swing.utils.DatabaseBaseService;
 import com.cihan.swing.utils.ProductUtil;
 import com.toedter.calendar.JDateChooser;
-
-import javafx.stage.FileChooser;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,21 +28,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 
 import java.awt.Color;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.GridBagLayout;
@@ -85,7 +73,8 @@ public class ProductSave extends JFrame {
 	private ProductStock productStock ;
     private ProductDao productService=new ProductDao();
     private ProductStockDao productStockService=new ProductStockDao();
-    private ProductImageDao productStockServiceImage=new ProductImageDao();
+    private ProductImageDao productImageService=new ProductImageDao();
+	private BufferedImage img;
 	
 	public ProductSave() {
 		InitializeProductSave();
@@ -223,9 +212,10 @@ public class ProductSave extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(productStockSave()) 
 				{
-					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
 					productImageSave();
 				    getTableProductStock() ;
+					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
+					
 				}
 				else
 					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarısız");
@@ -458,7 +448,6 @@ public class ProductSave extends JFrame {
 		 SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				BufferedImage img=null;
 				try {
 					img=ImageIO.read(new File(filePath));
 				} catch (Exception e) {
@@ -479,10 +468,25 @@ public class ProductSave extends JFrame {
 		 txtFinalPrize.setText("")  ;
 	 }
 	 
-	 private void productImageSave() {
+	 private boolean productImageSave() {
 		 ProductImage productImage = new ProductImage();
-		 productImage.setProductImage(lblImage.getText().getBytes());
+		 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		 try {
+			ImageIO.write( img, "jpg", baos );
+			 //baos.flush();
+			 byte[] imageInByte = baos.toByteArray();
+			 baos.close();
+			 System.out.println("imageInByte:"+imageInByte);
+			 productImage.setProductImage(imageInByte);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
+		
 		 productImage.setProductStock(productStock);
+		 return productImageService.save(productImage); 
 	 }
 }
 

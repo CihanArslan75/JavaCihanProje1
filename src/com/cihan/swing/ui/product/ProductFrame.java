@@ -15,6 +15,7 @@ import com.cihan.swing.dao.product.ProductDao;
 import com.cihan.swing.dao.product.ProductStockDao;
 import com.cihan.swing.model.product.Product;
 import com.cihan.swing.model.product.ProductStock;
+import com.cihan.swing.ui.excel.ProductExcel;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.ProductUtil;
 
@@ -50,6 +51,7 @@ public class ProductFrame extends JFrame{
     ProductStockDao productStockService=new ProductStockDao();
     List<Product> productList;
     private JButton btnKaytIlemleri;
+    private JButton btnExcel;
     
     public ProductFrame() {
         urunInitialize();
@@ -83,19 +85,29 @@ public class ProductFrame extends JFrame{
 			getTableProduct();
 		}
 	});
-	btnProductSearch.setBounds(467, 9, 162, 25);
+	btnProductSearch.setBounds(450, 9, 140, 25);
 	panel.add(btnProductSearch);
 	
-	btnKaytIlemleri = new JButton("Kayıt İşlemleri");
-	btnKaytIlemleri.addActionListener(new ActionListener() {
+//	btnKaytIlemleri = new JButton("Kayıt İşlemleri");
+//	btnKaytIlemleri.addActionListener(new ActionListener() {
+//		public void actionPerformed(ActionEvent e) {
+//		    ProductSave u=new ProductSave();
+//			u.setVisible(true);
+//			ProductFrame.this.setVisible(false);
+//		}
+//	});
+//	btnKaytIlemleri.setBounds(620, 9, 140, 25);
+//	panel.add(btnKaytIlemleri);
+//	
+	btnExcel = new JButton("Excel Raporu");
+	btnExcel.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    ProductSave u=new ProductSave();
-			u.setVisible(true);
-			ProductFrame.this.setVisible(false);
+			ProductExcel m=new ProductExcel();
+			JOptionPane.showMessageDialog(ProductFrame.this, "Excel Hazırlandı !");
 		}
 	});
-	btnKaytIlemleri.setBounds(705, 9, 162, 25);
-	panel.add(btnKaytIlemleri);
+	btnExcel.setBounds(661, 9, 140, 25);
+	panel.add(btnExcel);
 	
 	JLabel lblrnListesi = new JLabel("ÜRÜN LİSTESİ");
 	lblrnListesi.setForeground(Color.RED);
