@@ -21,6 +21,7 @@ import com.cihan.swing.dao.product.ProductDao;
 import com.cihan.swing.dao.product.ProductStockDao;
 import com.cihan.swing.model.product.Product;
 import com.cihan.swing.model.product.ProductStock;
+import com.cihan.swing.model.user.StateEnum;
 
 public class ProductExcel {
 	private ProductDao productService=new ProductDao();
@@ -81,7 +82,7 @@ public class ProductExcel {
         
         Product product =new Product();
         product.setProductName(productName);
-		product.setState(1);
+		product.setState(StateEnum.NORMAL);
 		System.out.println("productName:"+productName);
 		List<Product> productList=productService.search(product);
 		
@@ -89,7 +90,7 @@ public class ProductExcel {
 			ProductStock productStock =new ProductStock();
 			int ProductId =productList.get(i).getId();
 			product.setId(ProductId);
-			product.setState(1);
+			product.setState(StateEnum.NORMAL);
 		    productStock.setProduct(product);
 			List<ProductStock> productStockList=productStockService.searchIdAll(productStock);
 			for(int j=0 ;j<productStockList.size();j++) {

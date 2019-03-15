@@ -15,6 +15,7 @@ import com.cihan.swing.model.product.ProductImage;
 import com.cihan.swing.model.product.ProductStock;
 import com.cihan.swing.model.product.ProductTypeList;
 import com.cihan.swing.model.product.SizeList;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.ProductUtil;
 import com.toedter.calendar.JDateChooser;
@@ -84,6 +85,7 @@ public class ProductSave extends JFrame {
 		getColorCombo() ;
 		getSizeCombo() ;
 		initTableProductStock();
+		
 	}
 	
 	private void InitializeProductSave() {
@@ -151,6 +153,15 @@ public class ProductSave extends JFrame {
 		btnProductSave.setBounds(500, 115, 180, 25);
 		panel.add(btnProductSave);
 		
+		JButton btnClear = new JButton("FORMU TEMİZLE");
+		btnClear.setBounds(110, 115, 180, 25);
+		panel.add(btnClear);
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				formuTemizle();
+			}
+		});
+		
 		JLabel lblrnStokDetayi = new JLabel("ÜRÜN STOK DETAYI ");
 		lblrnStokDetayi.setForeground(Color.RED);
 		lblrnStokDetayi.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -162,6 +173,16 @@ public class ProductSave extends JFrame {
 		panel_2.setBounds(30, 234, 920, 216);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
+		
+		JButton btnStokNew = new JButton("YENİ STOK");
+		btnStokNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearStokForm();
+			}
+		});
+		btnStokNew.setBounds(110, 8, 180, 25);
+		panel_2.add(btnStokNew);
+		
 		
 		txtCount = new JTextField();
 		txtCount.addKeyListener(new KeyAdapter() {
@@ -176,9 +197,34 @@ public class ProductSave extends JFrame {
 			}
 		});
 		
+		JLabel lblRenk = new JLabel("Renk   :");
+		lblRenk.setBounds(12, 40, 56, 16);
+		panel_2.add(lblRenk);
+		
+		cmbColor = new JComboBox();
+		cmbColor.setBounds(110, 40, 180, 22);
+		panel_2.add(cmbColor);
+		
+		lblrnBeden = new JLabel("Ürün Beden :");
+		lblrnBeden.setBounds(12, 75, 75, 16);
+		panel_2.add(lblrnBeden);
+						
+		cmbSizeNo = new JComboBox();
+		cmbSizeNo.setBounds(110, 75, 180, 22);
+		panel_2.add(cmbSizeNo);
+		
+		
+		lblDedi = new JLabel("Ürünün Adedi :");
+		lblDedi.setBounds(12, 110, 93, 16);
+		panel_2.add(lblDedi);
+		
 		txtCount.setBounds(110, 110, 180, 22);
 		panel_2.add(txtCount);
 		txtCount.setColumns(10);
+		
+		lblBirimFiyat = new JLabel("Birim Fiyatı :");
+		lblBirimFiyat.setBounds(400, 40, 93, 16);
+		panel_2.add(lblBirimFiyat);
 		
 		txtUnitPrize = new JTextField();
 		txtUnitPrize.addKeyListener(new KeyAdapter() {
@@ -186,6 +232,8 @@ public class ProductSave extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				 try {
 				      int  x = Integer.parseInt(txtUnitPrize.getText());
+				      
+					
 				    } catch (NumberFormatException nfe) {
 				    	txtUnitPrize.setText("");
 				    	JOptionPane.showMessageDialog(ProductSave.this, "Birim Fiyatı Alanını Sayısal Olarak Giriniz !");
@@ -196,46 +244,40 @@ public class ProductSave extends JFrame {
 		panel_2.add(txtUnitPrize);
 		txtUnitPrize.setColumns(10);
 		
-		lblrnBeden = new JLabel("Ürün Beden :");
-		lblrnBeden.setBounds(12, 75, 75, 16);
-		panel_2.add(lblrnBeden);
+		lblIndirimOran = new JLabel("İndirim Oranı (Örn : 10) :");
+		lblIndirimOran.setBounds(339, 75, 154, 16);
+		panel_2.add(lblIndirimOran);
 		
-		lblDedi = new JLabel("Ürünün Adedi :");
-		lblDedi.setBounds(12, 110, 93, 16);
-		panel_2.add(lblDedi);
-		
-		lblBirimFiyat = new JLabel("Birim Fiyatı :");
-		lblBirimFiyat.setBounds(400, 40, 93, 16);
-		panel_2.add(lblBirimFiyat);
-		
-		JButton btnStockSave = new JButton("STOK KAYIT");
-		btnStockSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(productStockSave()) 
-				{
-					productImageSave();
-				    getTableProductStock() ;
-					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
-					
-				}
-				else
-					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarısız");
+		txtSaleRate = new JTextField();
+		txtSaleRate.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				 try {
+				      Integer  x = Integer.parseInt(txtSaleRate.getText());
+				    } catch (NumberFormatException nfe) {
+				    	txtSaleRate.setText("");
+				    	JOptionPane.showMessageDialog(ProductSave.this, "İndirim Oranı Alanını Sayısal Olarak Giriniz !.");
+				    	
+				    }
+				
+				 if(txtSaleRate.getText()!=null) txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText("");
 			}
 		});
-		btnStockSave.setBounds(500, 178, 180, 25);
-		panel_2.add(btnStockSave);
 		
-		cmbSizeNo = new JComboBox();
-		cmbSizeNo.setBounds(110, 75, 180, 22);
-		panel_2.add(cmbSizeNo);
+		txtSaleRate.setBounds(500, 75, 180, 22);
+		panel_2.add(txtSaleRate);
+		txtSaleRate.setColumns(10);
 		
-		cmbColor = new JComboBox();
-		cmbColor.setBounds(110, 40, 180, 22);
-		panel_2.add(cmbColor);
+		lblSonFiyat = new JLabel("Son Fiyatı :");
+		lblSonFiyat.setBounds(407, 110, 75, 16);
+		panel_2.add(lblSonFiyat);
 		
-		JLabel lblRenk = new JLabel("Renk   :");
-		lblRenk.setBounds(12, 40, 56, 16);
-		panel_2.add(lblRenk);
+		txtFinalPrize = new JTextField();
+		txtFinalPrize.setEditable(false);
+		txtFinalPrize.setBounds(500, 110, 180, 22);
+		panel_2.add(txtFinalPrize);
+		txtFinalPrize.setColumns(10);
 		
 		lblImage = new JLabel("");
 		lblImage.setBounds(736, 13, 154, 190);
@@ -257,46 +299,23 @@ public class ProductSave extends JFrame {
 		btnNewButton.setBounds(500, 145, 180, 25);
 		panel_2.add(btnNewButton);
 		
-		lblIndirimOran = new JLabel("İndirim Oranı (Örn : 10) :");
-		lblIndirimOran.setBounds(339, 75, 154, 16);
-		panel_2.add(lblIndirimOran);
-		
-		lblSonFiyat = new JLabel("Son Fiyatı :");
-		lblSonFiyat.setBounds(407, 110, 75, 16);
-		panel_2.add(lblSonFiyat);
-		
-		txtSaleRate = new JTextField();
-		txtSaleRate.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				 try {
-				      int  x = Integer.parseInt(txtSaleRate.getText());
-				    } catch (NumberFormatException nfe) {
-				    	txtSaleRate.setText("");
-				    	JOptionPane.showMessageDialog(ProductSave.this, "İndirim Oranı Alanını Sayısal Olarak Giriniz !.");
-				    }
-				txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
-			}
-		});
-		
-		txtSaleRate.setBounds(500, 75, 180, 22);
-		panel_2.add(txtSaleRate);
-		txtSaleRate.setColumns(10);
-		
-		txtFinalPrize = new JTextField();
-		txtFinalPrize.setEditable(false);
-		txtFinalPrize.setBounds(500, 110, 180, 22);
-		panel_2.add(txtFinalPrize);
-		txtFinalPrize.setColumns(10);
-		
-		JButton btnStokNew = new JButton("YENİ STOK");
-		btnStokNew.addActionListener(new ActionListener() {
+		JButton btnStockSave = new JButton("STOK KAYIT");
+		btnStockSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clearStokForm();
+				if(productStockSave()) 
+				{
+					if(img!=null) productImageSave();
+				    getTableProductStock() ;
+					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
+					
+				}
+				else
+					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarısız");
 			}
 		});
-		btnStokNew.setBounds(110, 8, 180, 25);
-		panel_2.add(btnStokNew);
+		btnStockSave.setBounds(500, 178, 180, 25);
+		panel_2.add(btnStockSave);
+		
 		
 		panel_1 = new JPanel();
 		panel_1.setBounds(30, 480, 920, 110);
@@ -368,10 +387,10 @@ public class ProductSave extends JFrame {
 		int ProductId =product.getId();
         ProductStock productStock1 =new ProductStock();
 	    Product product1 =new Product();
-	    product1.setState(1);
+	    product1.setState(StateEnum.NORMAL);
 	    product1.setId(ProductId);
 		productStock1.setProduct(product1);
-		productStock1.setState(1);
+		productStock1.setState(StateEnum.NORMAL);
 		ProductStockDao productStockService1=new ProductStockDao();
 		List<ProductStock> productStockList=productStockService1.searchIdAll(productStock1);
 		String[] columnNames= {"Ürün Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı","İndirim Oranı","Son Fiyat"};
@@ -418,31 +437,31 @@ public class ProductSave extends JFrame {
 		 if(dateProduct.getDate()!=null)      product.setProductDate(dateProduct.getDate());
 		 product.setInsertDate(new Date());
 		 product.setInsertUser(ProductUtil.user.getId());
-		 product.setState(1);
+		 product.setState(StateEnum.NORMAL);
 		 
 		 return productService.save(product); 
 	 }
 	 
-	 private boolean productStockSave(){
+	 private boolean productStockSave() {
 		  if(product==null) {
-			 JOptionPane.showMessageDialog(ProductSave.this, "Önce Ürünü Kayıt ediniz. ");
-		 }
-		 else
-		 {	
-			 productStock = new ProductStock();
-			 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
-			 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
-			 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	
-			 if(txtUnitPrize.getText()!=null)   productStock.setUnitPrize(Integer.parseInt(txtUnitPrize.getText()));	
-			 if(txtSaleRate.getText()!=null)   productStock.setSaleRate(Integer.parseInt(txtSaleRate.getText()));	
-			 if(txtFinalPrize.getText()!=null)   productStock.setFinalPrize(Integer.parseInt(txtFinalPrize.getText()));	
-			 productStock.setProduct(product);	
-			 productStock.setInsertDate(new Date());
-			 productStock.setInsertUser(ProductUtil.user.getId());
-			 productStock.setState(1);
+				 JOptionPane.showMessageDialog(ProductSave.this, "Önce Ürünü Kayıt ediniz. ");
 			 }
-		 
-		 return productStockService.save(productStock); 
+			 else
+			 {	
+				 productStock = new ProductStock();
+				 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
+				 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
+				 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	
+				 if(txtUnitPrize.getText()!=null)   productStock.setUnitPrize(Integer.parseInt(txtUnitPrize.getText()));	
+				 if(txtSaleRate.getText()!=null)   productStock.setSaleRate(Integer.parseInt(txtSaleRate.getText()));	
+				 if(txtFinalPrize.getText()!=null)   productStock.setFinalPrize(Integer.parseInt(txtFinalPrize.getText()));	
+				 productStock.setProduct(product);	
+				 productStock.setInsertDate(new Date());
+				 productStock.setInsertUser(ProductUtil.user.getId());
+				 productStock.setState(StateEnum.NORMAL);
+				 }
+			 
+			 return productStockService.save(productStock); 
 	 }
 	 
 	 private void getImage() {
@@ -468,6 +487,17 @@ public class ProductSave extends JFrame {
 		 txtSaleRate.setText("")   ;	
 		 txtFinalPrize.setText("")  ;
 	 }
+	 
+		public void formuTemizle() {
+			c.removeAll();
+			c.repaint();
+			InitializeProductSave();
+			getMarkaCombo() ;
+			getProductTypeCombo();
+			getColorCombo() ;
+			getSizeCombo() ;
+			initTableProductStock();
+		 }
 	 
 	 private boolean productImageSave() {
 		 ProductImage productImage = new ProductImage();

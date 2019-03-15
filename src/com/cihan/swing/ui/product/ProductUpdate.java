@@ -15,6 +15,7 @@ import com.cihan.swing.model.product.ProductImage;
 import com.cihan.swing.model.product.ProductStock;
 import com.cihan.swing.model.product.ProductTypeList;
 import com.cihan.swing.model.product.SizeList;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.ProductUtil;
 import com.toedter.calendar.JDateChooser;
@@ -74,7 +75,7 @@ public class ProductUpdate extends JFrame {
     private ProductImageDao productImageService=new ProductImageDao();
 	private BufferedImage img;
 	private JTextField txtProductStockNo;
-	private JTextField textField;
+	private JTextField txtProductID;
 	private Integer productID;
 	private Integer productStockID;
 	private Product productList;
@@ -83,12 +84,16 @@ public class ProductUpdate extends JFrame {
 	public ProductUpdate(Integer productID,Integer productStockID) {
 		this.productID=productID;
 		this.productStockID=productStockID;
-		
+	
 		InitializeProductSave();
 		getMarkaCombo() ;
 		getProductTypeCombo();
 		getColorCombo() ;
 		getSizeCombo() ;
+		findProduct();
+		findProductStock();
+		if(productList!=null) getProduct();
+		if(productStockList!=null) getProductStock();
 	
 	}
 	
@@ -161,17 +166,18 @@ public class ProductUpdate extends JFrame {
 		lblNo.setBounds(12, 13, 56, 16);
 		panel.add(lblNo);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setBounds(110, 10, 180, 22);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtProductID = new JTextField();
+		txtProductID.setEditable(false);
+		txtProductID.setBounds(110, 10, 180, 22);
+		panel.add(txtProductID);
+		txtProductID.setColumns(10);
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.LIGHT_GRAY);
 		panel_2.setBounds(30, 256, 920, 230);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
+		
 		
 		txtCount = new JTextField();
 		txtCount.addKeyListener(new KeyAdapter() {
@@ -223,7 +229,8 @@ public class ProductUpdate extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(productStockUpdate()) 
 				{
-					productImageSave();
+					if(img!=null) productImageSave(); 
+					
 				   	JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelle İşlemi Başarılı");
 					
 				}
@@ -284,7 +291,8 @@ public class ProductUpdate extends JFrame {
 				    	txtSaleRate.setText("");
 				    	JOptionPane.showMessageDialog(ProductUpdate.this, "İndirim Oranı Alanını Sayısal Olarak Giriniz !.");
 				    }
-				txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 if(txtSaleRate.getText()!=null) txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText("");
 			}
 		});
 		
@@ -315,10 +323,10 @@ public class ProductUpdate extends JFrame {
 		getContentPane().add(lblrnStokKayit);
 		
 		
-		JButton btnNewButton_1 = new JButton("MENÜYE DÖN");
+		JButton btnNewButton_1 = new JButton("ÜRÜN LİSTESİNE DÖN");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuFrame m=new MenuFrame();
+				ProductFrame m=new ProductFrame();
 				m.setVisible(true);
 				ProductUpdate.this.setVisible(false);
 			}
@@ -344,37 +352,37 @@ public class ProductUpdate extends JFrame {
 	
 	 private boolean productUpdateMaster(){
 		 product = new Product();
+		 product.setId(productID);
 		 if(cmbMarka.getSelectedItem()!=null) product.setProductMark((MarkaList) cmbMarka.getSelectedItem()); 
 		 if(txtProductName.getText()!=null)   product.setProductName(txtProductName.getText());	
 		 if(cmbType.getSelectedItem()!=null)  product.setProductType((ProductTypeList) cmbType.getSelectedItem());
 		 if(dateProduct.getDate()!=null)      product.setProductDate(dateProduct.getDate());
-		 product.setInsertDate(new Date());
-		 product.setInsertUser(ProductUtil.user.getId());
-		 product.setState(1);
+		 product.setUpdateDate(new Date());
+		 product.setUpdateUser(ProductUtil.user.getId());
+		 product.setState(StateEnum.NORMAL);
 		 
-		 return productService.save(product); 
+		 return productService.update(product); 
 	 }
 	 
 	 private boolean productStockUpdate(){
-		  if(product==null) {
-			 JOptionPane.showMessageDialog(ProductUpdate.this, "Önce Ürünü Kayıt ediniz. ");
-		 }
-		 else
-		 {	
-			 productStock = new ProductStock();
+			 ProductStock productStock = new ProductStock();
+			 productStock.setId(productStockID);
+			 Product product = new Product();
+			 product.setId(productID);
+			 productStock.setProduct(product);
 			 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
 			 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
 			 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	
 			 if(txtUnitPrize.getText()!=null)   productStock.setUnitPrize(Integer.parseInt(txtUnitPrize.getText()));	
 			 if(txtSaleRate.getText()!=null)   productStock.setSaleRate(Integer.parseInt(txtSaleRate.getText()));	
-			 if(txtFinalPrize.getText()!=null)   productStock.setFinalPrize(Integer.parseInt(txtFinalPrize.getText()));	
+			 if(txtSaleRate.getText()!=null && txtFinalPrize.getText()!=null)   productStock.setFinalPrize(Integer.parseInt(txtFinalPrize.getText()));	
 			 productStock.setProduct(product);	
-			 productStock.setInsertDate(new Date());
-			 productStock.setInsertUser(ProductUtil.user.getId());
-			 productStock.setState(1);
-			 }
+			 productStock.setUpdateDate(new Date());
+			 productStock.setUpdateUser(ProductUtil.user.getId());
+			 productStock.setState(StateEnum.NORMAL);
+			
 		 
-		 return productStockService.save(productStock); 
+		 return productStockService.update(productStock); 
 	 }
 	 
 	 private void getImage() {
@@ -427,6 +435,24 @@ public class ProductUpdate extends JFrame {
 		else
 		 return null;	
 		 
+	}
+	
+	private void getProduct() {
+		txtProductID.setText(""+productList.getId());
+		cmbMarka.setSelectedItem(productList.getProductMark());
+		cmbType.setSelectedItem(productList.getProductType());
+		txtProductName.setText(productList.getProductName());
+		dateProduct.setDate(productList.getProductDate());
+	}
+	
+	private void getProductStock() {
+		txtProductStockNo.setText(""+productStockList.getId());
+		cmbColor.setSelectedItem(productStockList.getProductColor());
+		cmbSizeNo.setSelectedItem(productStockList.getSizeList());
+		txtCount.setText(""+productStockList.getCount());
+		txtUnitPrize.setText(""+productStockList.getUnitPrize());
+		txtSaleRate.setText(""+productStockList.getSaleRate());
+		txtFinalPrize.setText(""+productStockList.getFinalPrize());
 	}
 }
 

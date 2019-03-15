@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.cihan.swing.model.user.Role;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.model.user.User;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
@@ -41,43 +42,43 @@ public class LoginFrame extends JFrame {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
-				JLabel lblKullancAd = new JLabel("Kullan\u0131c\u0131 Ad\u0131 :");
-				lblKullancAd.setFont(new Font("Tahoma", Font.PLAIN, 15));
-				lblKullancAd.setBounds(36, 42, 132, 16);
-				panel.add(lblKullancAd);
+		JLabel lblKullancAd = new JLabel("Kullan\u0131c\u0131 Ad\u0131 :");
+		lblKullancAd.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblKullancAd.setBounds(36, 42, 132, 16);
+		panel.add(lblKullancAd);
 				
-						JTextField txtUsername = new JTextField();
-						txtUsername.setBounds(179, 39, 116, 22);
-						panel.add(txtUsername);
-						txtUsername.setColumns(10);
+		JTextField txtUsername = new JTextField();
+		txtUsername.setBounds(179, 39, 116, 22);
+		panel.add(txtUsername);
+		txtUsername.setColumns(10);
 						
-								JLabel lblSifre = new JLabel("\u015Eifre :");
-								lblSifre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-								lblSifre.setBounds(36, 91, 56, 16);
-								panel.add(lblSifre);
+		JLabel lblSifre = new JLabel("\u015Eifre :");
+		lblSifre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblSifre.setBounds(36, 91, 56, 16);
+		panel.add(lblSifre);
 								
-										JPasswordField txtPassword = new JPasswordField();
-										txtPassword.setBounds(179, 88, 116, 22);
-										panel.add(txtPassword);
-										txtPassword.setColumns(10);
+		JPasswordField txtPassword = new JPasswordField();
+		txtPassword.setBounds(179, 88, 116, 22);
+		panel.add(txtPassword);
+		txtPassword.setColumns(10);
 										
-												JButton btnCancel = new JButton("\u0130PTAL");
-												btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-												btnCancel.setBounds(83, 160, 97, 25);
-												panel.add(btnCancel);
+		JButton btnCancel = new JButton("\u0130PTAL");
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnCancel.setBounds(83, 160, 97, 25);
+		panel.add(btnCancel);
 												
-														JButton btnEnter = new JButton("G\u0130R\u0130\u015E");
-														btnEnter.setFont(new Font("Tahoma", Font.PLAIN, 15));
-														btnEnter.setBounds(241, 160, 97, 25);
-														panel.add(btnEnter);
-														btnEnter.addActionListener(new ActionListener() {
-														public void actionPerformed(ActionEvent e) {
+		JButton btnEnter = new JButton("G\u0130R\u0130\u015E");
+		btnEnter.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnEnter.setBounds(241, 160, 97, 25);
+		panel.add(btnEnter);
+		btnEnter.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
 			 System.out.println("aaa:"+txtUsername.getText());
-														if(txtUsername.getText().equals("") || txtUsername.getText()==null  || txtPassword.getText().equals("") ) {
-			 JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Adı veya Şifre Boş olamaz !!");
-														}
-														else
-														{
+			 if(txtUsername.getText().equals("") || txtUsername.getText()==null  || txtPassword.getText().equals("") ) {
+				 JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Adı veya Şifre Boş olamaz !!");
+			 }
+			else
+			{
 			 DatabaseBaseService<User> userService=new DatabaseBaseService<User>();
 			 List<User> user = null;
 			 try {
@@ -113,7 +114,7 @@ public class LoginFrame extends JFrame {
 					 userAdmin.setUname(txtUsername.getText());
 					 userAdmin.setPassword(txtPassword.getText());
 					 userAdmin.setInsertDate(new Date());
-					 userAdmin.setState(1);
+					 userAdmin.setState(StateEnum.NORMAL);
 					 userAdmin.setRol(Role.ADMIN);
 					 userService.save(userAdmin);
 					 MenuFrame menuFrame=new MenuFrame();
@@ -136,13 +137,13 @@ public class LoginFrame extends JFrame {
 			 }
 			 
 			 }
-														}
+		}
 		
-														});
-												btnCancel.addActionListener(new ActionListener() {
-													public void actionPerformed(ActionEvent e) {
-														LoginFrame.this.dispose();
-													}
-												});
+		});
+			btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					LoginFrame.this.dispose();
+			}
+		});
 	}
 }

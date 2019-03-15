@@ -15,6 +15,7 @@ import com.cihan.swing.dao.product.ProductDao;
 import com.cihan.swing.dao.product.ProductStockDao;
 import com.cihan.swing.model.product.Product;
 import com.cihan.swing.model.product.ProductStock;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.ui.excel.ProductExcel;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.ProductUtil;
@@ -28,12 +29,15 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.JComboBox;
 
 public class ProductFrame extends JFrame{
          
@@ -47,16 +51,19 @@ public class ProductFrame extends JFrame{
     private JTable table1;
     private JTable table2;
     private JTextField txtProductSearch;
-    ProductDao productService=new ProductDao();
-    ProductStockDao productStockService=new ProductStockDao();
-    List<Product> productList;
+    private List<Product> productList;
     private JButton btnKaytIlemleri;
     private JButton btnExcel;
+    private int productId;
+    private int productStockId;
+    private List<ProductStock> productStockList;
+    private JComboBox cmbOrderCount ;
     
     public ProductFrame() {
         urunInitialize();
         initTableProduct();
         initTableProductStock();
+        getOrderCount();
     }   
     
     private void urunInitialize() {
@@ -89,17 +96,6 @@ public class ProductFrame extends JFrame{
 	btnProductSearch.setBounds(450, 9, 140, 25);
 	panel.add(btnProductSearch);
 	
-//	btnKaytIlemleri = new JButton("Kayıt İşlemleri");
-//	btnKaytIlemleri.addActionListener(new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//		    ProductSave u=new ProductSave();
-//			u.setVisible(true);
-//			ProductFrame.this.setVisible(false);
-//		}
-//	});
-//	btnKaytIlemleri.setBounds(620, 9, 140, 25);
-//	panel.add(btnKaytIlemleri);
-//	
 	btnExcel = new JButton("Excel Raporu");
 	btnExcel.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -163,16 +159,49 @@ public class ProductFrame extends JFrame{
 				
 	table2 = new JTable();
 	scrollPane2.setColumnHeaderView(table2);
-				
+	
+	JButton btnOrder = new JButton("SİPARİŞ VER");
+	btnOrder.setBounds(314, 580, 164, 25);
+	getContentPane().add(btnOrder);
+	
+	cmbOrderCount = new JComboBox();
+	cmbOrderCount.setBounds(232, 580, 55, 25);
+	getContentPane().add(cmbOrderCount);
+	
+	JLabel lblSipariAdedi = new JLabel("Sipariş Adedi :");
+	lblSipariAdedi.setBounds(124, 584, 103, 16);
+	getContentPane().add(lblSipariAdedi);
+	
+
+	JButton btnUpdate = new JButton("GÜNCELLEME EKRANI");
+	btnUpdate.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+						
+			if( productId>0   &&  productStockId>0) {
+			    ProductUpdate m=new ProductUpdate(productId,productStockId );
+				m.setVisible(true);
+				ProductFrame.this.setVisible(false);
+			}
+			else
+			{	
+			   
+				JOptionPane.showMessageDialog(ProductFrame.this, "Seçim Yapınız  !!");
+			}
+		}
+	});
+	btnUpdate.setBounds(559, 580, 164, 25);
+	getContentPane().add(btnUpdate);
+	
+	
 	btnMenu = new JButton("MENÜYE DÖN");
 	btnMenu.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-		MenuFrame m=new MenuFrame();
-		m.setVisible(true);
-		ProductFrame.this.setVisible(false);
-		}
+	MenuFrame m=new MenuFrame();
+	m.setVisible(true);
+	ProductFrame.this.setVisible(false);
+	}
 	});
-	btnMenu.setBounds(798, 584, 164, 25);
+	btnMenu.setBounds(794, 580, 164, 25);
 	c.add(btnMenu);
 }
     
@@ -205,7 +234,8 @@ public class ProductFrame extends JFrame{
 	private void getTableProduct() {
 		Product product =new Product();
 		product.setProductName(txtProductSearch.getText());
-		product.setState(1);
+		product.setState(StateEnum.NORMAL);
+		ProductDao productService=new ProductDao();
 		productList=productService.search(product);
 		String[] columnNames1= {"NO","Marka","Ürün Tipi","Ürün Adı","Üretim Tarihi" };
 		String[][] data1 = new String[productList.size()][5];
@@ -248,18 +278,22 @@ public class ProductFrame extends JFrame{
 							 }
 						} 
 					 });
-	 }
+
 	
+			
+}
+
 	private void getTableProductStock() {
 		int ii=table1.getSelectedRow() ;
-		int ProductId =productList.get(ii).getId();
+		productId =productList.get(ii).getId();
 	    ProductStock productStock =new ProductStock();
 	    Product product =new Product();
-	    product.setState(1);
-	    product.setId(ProductId);
+	    product.setState(StateEnum.NORMAL);
+	    product.setId(productId);
 		productStock.setProduct(product);
-		productStock.setState(1);
-		List<ProductStock> productStockList=productStockService.searchIdAll(productStock);
+		productStock.setState(StateEnum.NORMAL);
+		ProductStockDao productStockService=new ProductStockDao();
+		productStockList=productStockService.searchIdAll(productStock);
 		String[] columnNames2= {"Ürün Stok NO","Ürün Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı","İndirim Oranı","Son Fiyat"};
 		String[][] data2 = new String[productStockList.size()][7];
 				
@@ -296,7 +330,22 @@ public class ProductFrame extends JFrame{
 			}
 			table2 = new JTable(data2,columnNames2);
 			scrollPane2.setViewportView(table2);
+			table2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			    @Override
+					public void valueChanged(ListSelectionEvent e) {
+						if (table2.getSelectedRow() > -1) {
+							int iii=table2.getSelectedRow() ;
+							productStockId =productStockList.get(iii).getId();
+							
+						 }
+					} 
+				 });
 			
-	
 	 }
+	
+	protected void getOrderCount() {
+		Integer[] score= {1,2,3,4,5,6,7,8,9,10};
+		cmbOrderCount.setModel(new DefaultComboBoxModel(score));
+		
+	}
 }

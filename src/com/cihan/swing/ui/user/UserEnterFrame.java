@@ -14,6 +14,7 @@ import javax.swing.plaf.OptionPaneUI;
 import javax.swing.table.DefaultTableModel;
 
 import com.cihan.swing.model.user.Role;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.model.user.User;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
@@ -196,7 +197,7 @@ public class UserEnterFrame extends JFrame {
 		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
 		 user.setInsertDate(new Date());
 		 user.setInsertUser(ProductUtil.user.getId());
-		 user.setState(1);
+		 user.setState(StateEnum.NORMAL);
 		 
 		 return userServis.save(user);
 		

@@ -14,6 +14,7 @@ import javax.swing.plaf.OptionPaneUI;
 import javax.swing.table.DefaultTableModel;
 
 import com.cihan.swing.model.user.Role;
+import com.cihan.swing.model.user.StateEnum;
 import com.cihan.swing.model.user.User;
 import com.cihan.swing.ui.menu.MenuFrame;
 import com.cihan.swing.utils.DatabaseBaseService;
@@ -48,9 +49,14 @@ public class UserFrame extends JFrame {
     private JTextField txtPassword;
     private JComboBox cmbRol;
     private Container c=getContentPane();
-    DatabaseBaseService<User> userServis=new DatabaseBaseService<User>();
     private JTextField txtId;
     private JButton btnMenu;
+	private Integer insertUser;
+	private Date    insertDate;
+	private Integer updateUser;
+	private Date    updateDate;
+	private Integer deleteUser;
+	private Date    deleteDate;
       
 	public UserFrame() {
 		 initializeUserFrame();
@@ -236,24 +242,24 @@ public class UserFrame extends JFrame {
 	private void initTableUser() {
 		 table.setModel(new javax.swing.table.DefaultTableModel(
 	             new Object [][] {
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null},
-	                 {null, null, null, null, null, null}
+	                 {null, null, null, null, null, null,null},
+	                 {null, null, null, null, null, null,null},
+	                 {null, null, null, null, null, null,null},
+	                 {null, null, null, null, null, null,null}
 	             },
-	             new String [] {"Kullanıcı Adı","Adı","Soyadı","Email" ,"Rol","Kayıt Tarihi"}
+	             new String [] {"Kullanıcı Adı","Adı","Soyadı","Email" ,"Rol","Kayıt Tarihi","Durumu"}
 	         ));
 	    scrollPane_1.setViewportView(table);
 	}
 	
 	private void getTable() {
 		User user =new User();
+		DatabaseBaseService<User> userServis=new DatabaseBaseService<User>();
 		user.setUsername(txtUserFind.getText());
-		user.setState(1);
+		user.setState(StateEnum.NORMAL);
 		userList=userServis.search(user);
-		System.out.println("user.durum:"+user.getState());
-		String[] columnNames= {"Kullanıcı Adı","Adı","Soyadı","Email" ,"Rol","Kayıt Tarihi"};
-		String[][] data = new String[userList.size()][6];
+		String[] columnNames= {"Kullanıcı Adı","Adı","Soyadı","Email" ,"Rol","Kayıt Tarihi","Durumu"};
+		String[][] data = new String[userList.size()][7];
 		for (int i = 0; i < userList.size(); i++) {
 				
 			if(userList.get(i).getUsername()!=null) 
@@ -282,7 +288,12 @@ public class UserFrame extends JFrame {
              	data[i][5]=sdf.format(userList.get(i).getInsertDate());
             else 
 				data[i][5]=null;
-			}
+			
+			if(userList.get(i).getState()!=null) 
+				data[i][6] = ""+userList.get(i).getState();
+			else 
+				data[i][6]=null;
+		    }
 			table = new JTable(data,columnNames);
 			scrollPane_1.setViewportView(table);
 			
@@ -324,6 +335,14 @@ public class UserFrame extends JFrame {
 			cmbRol.setSelectedItem(userList.get(i).getRol());
 		else 
 		cmbRol.setSelectedItem(null);
+		
+		insertUser=userList.get(i).getInsertUser();
+		insertDate=userList.get(i).getInsertDate();
+		updateUser=userList.get(i).getUpdateUser();
+		updateDate=userList.get(i).getUpdateDate();
+		deleteUser=userList.get(i).getDeleteUser();
+		deleteDate=userList.get(i).getDeleteDate();
+		
 	}
 	
 	private void getRolCombo() {
@@ -348,23 +367,8 @@ public class UserFrame extends JFrame {
 		 getRolCombo() ;
 	 }
 	 
-	 public boolean userSave(){
-		 User user = new User();
-		 if(txtUserName.getText()!=null) user.setUsername(txtUserName.getText()); 
-		 if(txtPassword.getText()!=null) user.setPassword(txtPassword.getText());	
-		 if(txtUname.getText()!=null)    user.setUname(txtUname.getText());
-		 if(txtSurname.getText()!=null)  user.setSurname(txtSurname.getText());
-		 if(txtEmail.getText()!=null)    user.setEmail(txtEmail.getText());
-		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
-		 user.setInsertDate(new Date());
-		 user.setInsertUser(ProductUtil.user.getId());
-		 user.setState(1);
-		 
-		 return userServis.save(user);
-		
-		 
-	 }
 	 public boolean userUpdate(Integer id) {
+		 DatabaseBaseService<User> userServis=new DatabaseBaseService<User>();
 		 User user = new User();
 		 user.setId(id);
 		 if(txtUserName.getText()!=null) user.setUsername(txtUserName.getText()); 
@@ -375,12 +379,17 @@ public class UserFrame extends JFrame {
 		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
 		 user.setUpdateDate(new Date());
 		 user.setUpdateUser(ProductUtil.user.getId());
-		 user.setState(1);
+		 if(insertDate!=null) user.setInsertDate(insertDate);
+		 if(insertUser!=null) user.setInsertUser(insertUser);
+		 if(deleteDate!=null) user.setDeleteDate(deleteDate);
+		 if(deleteUser!=null) user.setDeleteUser(deleteUser);
+		 user.setState(StateEnum.NORMAL);
 		 return  userServis.update(user);
 		
 			 
 	 }
 	 public boolean userDelete(Integer id) {
+		 DatabaseBaseService<User> userServis=new DatabaseBaseService<User>();
 		 User user = new User();
 		 user.setId(id);
 		 if(txtUserName.getText()!=null) user.setUsername(txtUserName.getText()); 
@@ -391,7 +400,11 @@ public class UserFrame extends JFrame {
 		 if(cmbRol.getSelectedItem()!=null) user.setRol((Role) cmbRol.getSelectedItem());
 		 user.setDeleteDate(new Date());	
 		 user.setDeleteUser(ProductUtil.user.getId());
-		 user.setState(2);  // delete kayıt
+		 if(insertDate!=null) user.setInsertDate(insertDate);
+		 if(insertUser!=null) user.setInsertUser(insertUser);
+		 if(updateDate!=null) user.setUpdateDate(updateDate);
+		 if(updateUser!=null) user.setUpdateUser(updateUser);
+		 user.setState(StateEnum.SILINMIS);  // delete kayıt
 		 return userServis.update(user);
          		 
 	 }

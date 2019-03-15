@@ -44,7 +44,7 @@ public class ProductImage {
 	}
 	
 	@Lob
-	@Column(name="productimage", nullable=false, columnDefinition="mediumblob")
+	@Column(name="productimage",  columnDefinition="mediumblob")
 	public byte[] getProductImage() {
 		return productImage;
 	}

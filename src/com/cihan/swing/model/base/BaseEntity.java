@@ -4,6 +4,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import com.cihan.swing.model.user.StateEnum;
+
 @MappedSuperclass
 public class BaseEntity {
 	
@@ -13,7 +15,7 @@ public class BaseEntity {
 	private Date updateDate;
 	private Integer deleteUser;
 	private Date deleteDate;
-	private Integer state;
+	private StateEnum state;
 	
 	@Column(name = "insertuser")
 	public Integer getInsertUser() {
@@ -23,15 +25,20 @@ public class BaseEntity {
 	public void setInsertUser(Integer insertUser) {
 		this.insertUser = insertUser;
 	}
+	
 	@Column(name = "insertdate")
 	public Date getInsertDate() {
 		return insertDate;
 	}
+	
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
+	}
+	
 	@Column(name = "updateuser")
 	public Integer getUpdateUser() {
 		return updateUser;
 	}
-
 	public void setUpdateUser(Integer updateUser) {
 		this.updateUser = updateUser;
 	}
@@ -58,20 +65,18 @@ public class BaseEntity {
 	public Date getDeleteDate() {
 		return deleteDate;
 	}
-
+    
 	public void setDeleteDate(Date deleteDate) {
 		this.deleteDate = deleteDate;
 	}
 
-	public void setInsertDate(Date insertDate) {
-		this.insertDate = insertDate;
-	}
+	
 	@Column(name = "state")
-	public Integer getState() {
+	public StateEnum getState() {
 		return state;
 	}
 
-	public void setState(Integer state) {
+	public void setState(StateEnum state) {
 		this.state = state;
 	}
 

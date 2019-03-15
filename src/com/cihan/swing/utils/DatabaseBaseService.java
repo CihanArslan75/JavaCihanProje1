@@ -1,7 +1,7 @@
 package com.cihan.swing.utils;
 
 import com.cihan.swing.model.log.LogProduct;
-
+import com.cihan.swing.model.user.StateEnum;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -141,7 +141,7 @@ public class DatabaseBaseService<T> implements  IDatabase<T>{
         {
             openSession();
             Criteria cr = ss.createCriteria(t.getClass());
-            cr.add(Restrictions.eq("state",1));
+            cr.add(Restrictions.eq("state",StateEnum.NORMAL));
             cr.add(Restrictions.ilike(columnName, search));
             
             List<T> list = cr.list();

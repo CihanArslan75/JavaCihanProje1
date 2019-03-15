@@ -33,7 +33,8 @@ public class LogFrame extends JFrame{
 	private JScrollPane scrollPane;
 	DatabaseBaseService<LogProduct> logServis=new DatabaseBaseService<LogProduct>();
 	private List<LogProduct> logList;
-	private JPanel panel_1;
+	private JDateChooser dateLog1;
+	private JDateChooser dateLog2 ;
 	
 	 
 	public LogFrame() {
@@ -42,6 +43,7 @@ public class LogFrame extends JFrame{
 		//getTable();
 	}
 	
+
 	private void initializeLogFrame() {
 		setTitle("LOG İŞLEMLERİ");
 		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
@@ -67,6 +69,15 @@ public class LogFrame extends JFrame{
 		
 		table = new JTable();
 		
+		JButton btnAra = new JButton("Ara");
+		btnAra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getTable();
+			}
+		});
+		btnAra.setBounds(390, 37, 97, 25);
+		getContentPane().add(btnAra);
+		
 		JButton btnMenu = new JButton("MENÜYE DÖN");
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -78,25 +89,15 @@ public class LogFrame extends JFrame{
 		btnMenu.setBounds(753, 595, 164, 25);
 		getContentPane().add(btnMenu);
 		
-		panel_1 = new JPanel();
-		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBounds(22, 13, 948, 75);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
+		dateLog1 = new JDateChooser();
+		dateLog1.setBounds(20, 37, 140, 22);
+		dateLog1.setDateFormatString("dd/MM/yyyy");
+		getContentPane().add(dateLog1);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setDateFormatString("dd/MM/yyyy");
-		dateChooser.setBounds(31, 24, 140, 22);
-		panel_1.add(dateChooser);
-		
-		JDateChooser dateChooser_1 = new JDateChooser();
-		dateChooser_1.setDateFormatString("dd/MM/yyyy");
-		dateChooser_1.setBounds(210, 24, 140, 22);
-		panel_1.add(dateChooser_1);
-		
-		JButton button = new JButton("Ara");
-		button.setBounds(401, 24, 97, 25);
-		panel_1.add(button);
+		dateLog2 = new JDateChooser();
+		dateLog2.setBounds(199, 37, 140, 22);
+		dateLog2.setDateFormatString("dd/MM/yyyy");
+		getContentPane().add(dateLog2);
 		
 	}
 	
@@ -119,11 +120,51 @@ public class LogFrame extends JFrame{
 		 scrollPane.setViewportView(table);
 	}
 	
+	private void getTable() {
+		if(dateLog1.getDate()!=null && dateLog2.getDate()!=null) {
+			logList=logServis.searchDate("logDate",dateLog1.getDate(),dateLog2.getDate(),new LogProduct());
+		}
+		else
+		{
+			logList=logServis.search(new LogProduct());
+		}
+		String[] columnNames= {"","Kullanıcı","Tarih ","Hata Mesajı "};
+		String[][] data = new String[logList.size()][4];
+		int sayi=0;
+		for (int i = 0; i < logList.size(); i++) {
+			sayi++;
+			    data[i][0] = ""+sayi; 
+  		  if(logList.get(i).getUser().getUsername()!=null) 
+				data[i][1] = logList.get(i).getUser().getUsername(); 
+			else 
+				data[i][1]=null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            if(logList.get(i).getLogDate()!=null) 
+             	data[i][2]=sdf.format(logList.get(i).getLogDate());
+            else 
+				data[i][2]=null;
+			if(logList.get(i).getText()!=null) 
+				data[i][3] = logList.get(i).getText();
+			else 
+				data[i][3]=null;
+			
+		}
+		table = new JTable(data,columnNames);
+		 table.getColumnModel().getColumn(0).setMaxWidth(50);
+		 table.getColumnModel().getColumn(1).setMaxWidth(100);
+		 table.getColumnModel().getColumn(2).setMaxWidth(150);
+		 table.getColumnModel().getColumn(3).setMaxWidth(700);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		scrollPane.setViewportView(table);
+		
+	}
+	
 	private String getUserName(int id) {
 		DatabaseBaseService<User> userServis=new DatabaseBaseService<User>();
 		User user=userServis.findId(id,new User());
 		if (user != null ) return user.getUsername();
 		else return null;
 	}
+	
 }
 
