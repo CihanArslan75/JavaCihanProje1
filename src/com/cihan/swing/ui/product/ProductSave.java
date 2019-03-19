@@ -48,37 +48,39 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class ProductSave extends JFrame {
-	private Container c = getContentPane();
-	private JComboBox cmbMarka ;
-	private JComboBox cmbType;
-	private JComboBox cmbColor;
-	private JTextField txtProductName;
-	private JTable table;
-	private JPanel panel;
-	private JPanel panel_1;
-	JScrollPane scrollPane;
-	private JPanel panel_2;
-	private JTextField txtCount;
-	private JTextField txtUnitPrize;
-	private JLabel lblrnBeden;
-	private JLabel lblDedi;
-	private JLabel lblBirimFiyat;
-	private JComboBox cmbSizeNo ;
-	private JDateChooser dateProduct;
-	private JLabel lblImage;
-	private String filePath = null;
-	private JLabel lblIndirimOran;
-	private JLabel lblSonFiyat;
-	private JTextField txtSaleRate;
-	private JTextField txtFinalPrize;
-	private Product product;
-	private ProductStock productStock ;
-    private ProductDao productService=new ProductDao();
-    private ProductStockDao productStockService=new ProductStockDao();
-    private ProductImageDao productImageService=new ProductImageDao();
-	private BufferedImage img;
+	protected Container c = getContentPane();
+	protected JComboBox cmbMarka ;
+	protected JComboBox cmbType;
+	protected JComboBox cmbColor;
+	protected JTextField txtProductName;
+	protected JTable table;
+	protected JPanel panel;
+	protected JPanel panel_1;
+	protected JScrollPane scrollPane;
+	protected JPanel panel_2;
+	protected JTextField txtCount;
+	protected JTextField txtUnitPrize;
+	protected JLabel lblrnBeden;
+	protected JLabel lblDedi;
+	protected JLabel lblBirimFiyat;
+	protected JComboBox cmbSizeNo ;
+	protected JDateChooser dateProduct;
+	protected JLabel lblImage;
+	protected String filePath = null;
+	protected JLabel lblIndirimOran;
+	protected JLabel lblSonFiyat;
+	protected JTextField txtSaleRate;
+	protected JTextField txtFinalPrize;
+	protected Product product;
+	protected ProductStock productStock ;
+    protected ProductDao productService=new ProductDao();
+    protected ProductStockDao productStockService=new ProductStockDao();
+    protected ProductImageDao productImageService=new ProductImageDao();
+	protected BufferedImage img;
+	private String form;
 	
 	public ProductSave() {
+		this.form=form;
 		InitializeProductSave();
 		getMarkaCombo() ;
 		getProductTypeCombo();
@@ -88,8 +90,13 @@ public class ProductSave extends JFrame {
 		
 	}
 	
-	private void InitializeProductSave() {
-		setTitle("Ürünler ve Ürün Stokları Giriş Formu  ");
+
+	protected void InitializeProductSave() {
+		if(form=="save")
+			setTitle("Ürünler ve Ürün Stokları Giriş Formu  ");
+		else
+			setTitle("Ürünler ve Ürün Stokları Güncelleme Formu  ");
+		
 		setBounds(ProductUtil.x1, ProductUtil.y1, ProductUtil.width1, ProductUtil.height1);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		c.setLayout(null);
@@ -150,17 +157,8 @@ public class ProductSave extends JFrame {
 					JOptionPane.showMessageDialog(ProductSave.this, "Ürün Kayıt İşlemi Başarısız");
 			}
 		});
-		btnProductSave.setBounds(500, 115, 180, 25);
+		btnProductSave.setBounds(500, 112, 180, 25);
 		panel.add(btnProductSave);
-		
-		JButton btnClear = new JButton("FORMU TEMİZLE");
-		btnClear.setBounds(110, 115, 180, 25);
-		panel.add(btnClear);
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				formuTemizle();
-			}
-		});
 		
 		JLabel lblrnStokDetayi = new JLabel("ÜRÜN STOK DETAYI ");
 		lblrnStokDetayi.setForeground(Color.RED);
@@ -304,7 +302,10 @@ public class ProductSave extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(productStockSave()) 
 				{
-					if(img!=null) productImageSave();
+					if(img!=null) 
+					{  
+						productImageSave();
+					}
 				    getTableProductStock() ;
 					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
 					
@@ -355,23 +356,32 @@ public class ProductSave extends JFrame {
 		btnNewButton_1.setBounds(777, 603, 173, 25);
 		c.add(btnNewButton_1);
 		
+		JButton btnClear = new JButton("FORMU TEMİZLE");
+		btnClear.setBounds(30, 603, 180, 25);
+		getContentPane().add(btnClear);
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				formuTemizle();
+			}
+		});
+		
 	}
 	
-	private void  getProductTypeCombo() {
+	protected void  getProductTypeCombo() {
 		cmbType.setModel(new DefaultComboBoxModel(ProductTypeList.values()));		
 	}
 	
-	private void  getMarkaCombo() {
+	protected void  getMarkaCombo() {
 		cmbMarka.setModel(new DefaultComboBoxModel(MarkaList.values()));
 	}
-	private void  getColorCombo() {
+	protected void  getColorCombo() {
 		cmbColor.setModel(new DefaultComboBoxModel(ColorList.values()));
 	}
-	private void  getSizeCombo() {
+	protected void  getSizeCombo() {
 		cmbSizeNo.setModel(new DefaultComboBoxModel(SizeList.values()));
 	}
 	
-	private void initTableProductStock() {
+	protected void initTableProductStock() {
 		 table.setModel(new javax.swing.table.DefaultTableModel(
 	             new Object [][] {
 	                 {null, null, null, null, null, null},
@@ -383,7 +393,7 @@ public class ProductSave extends JFrame {
 	         ));
 	    scrollPane.setViewportView(table);
 	}
-	private void getTableProductStock() {
+	protected void getTableProductStock() {
 		int ProductId =product.getId();
         ProductStock productStock1 =new ProductStock();
 	    Product product1 =new Product();
@@ -429,7 +439,7 @@ public class ProductSave extends JFrame {
 	
 	 }
 
-	 private boolean productSaveMaster(){
+	 protected boolean productSaveMaster(){
 		 product = new Product();
 		 if(cmbMarka.getSelectedItem()!=null) product.setProductMark((MarkaList) cmbMarka.getSelectedItem()); 
 		 if(txtProductName.getText()!=null)   product.setProductName(txtProductName.getText());	
@@ -442,7 +452,7 @@ public class ProductSave extends JFrame {
 		 return productService.save(product); 
 	 }
 	 
-	 private boolean productStockSave() {
+	 protected boolean productStockSave() {
 		  if(product==null) {
 				 JOptionPane.showMessageDialog(ProductSave.this, "Önce Ürünü Kayıt ediniz. ");
 			 }
@@ -464,7 +474,7 @@ public class ProductSave extends JFrame {
 			 return productStockService.save(productStock); 
 	 }
 	 
-	 private void getImage() {
+	 protected void getImage() {
 		 SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -479,7 +489,7 @@ public class ProductSave extends JFrame {
 		}); 
 	 }
 	 
-	 private void clearStokForm() {
+	 protected void clearStokForm() {
 		 cmbColor.setSelectedItem(ColorList.SİYAH); 
 		 cmbSizeNo.setSelectedItem(SizeList.XXSMALL)  ;	
 		 txtCount.setText("")   ;	
@@ -499,23 +509,20 @@ public class ProductSave extends JFrame {
 			initTableProductStock();
 		 }
 	 
-	 private boolean productImageSave() {
+	 protected boolean productImageSave() {
 		 ProductImage productImage = new ProductImage();
 		 ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		 try {
 			ImageIO.write( img, "jpg", baos );
-			 //baos.flush();
+			 baos.flush();
 			 byte[] imageInByte = baos.toByteArray();
 			 baos.close();
-			 System.out.println("imageInByte:"+imageInByte);
 			 productImage.setProductImage(imageInByte);
+			 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		 
-		
+		 		
 		 productImage.setProductStock(productStock);
 		 return productImageService.save(productImage); 
 	 }

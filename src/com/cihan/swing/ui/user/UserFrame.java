@@ -114,16 +114,7 @@ public class UserFrame extends JFrame {
 			}
 		});
 		
-		JButton btnClear = new JButton("FORMU TEMİZLE");
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				formuTemizle();
-			}
-		});
-		btnClear.setBounds(480, 12, 169, 25);
-		panel.add(btnClear);
-		
-		
+			
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.LIGHT_GRAY);
 		panel_2.setForeground(Color.WHITE);
@@ -234,8 +225,17 @@ public class UserFrame extends JFrame {
 				UserFrame.this.setVisible(false);
 			}
 		});
-		btnMenu.setBounds(753, 595, 164, 25);
+		btnMenu.setBounds(535, 600, 164, 25);
 		getContentPane().add(btnMenu);
+		
+		JButton btnClear = new JButton("FORMU TEMİZLE");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				formuTemizle();
+			}
+		});
+		btnClear.setBounds(130, 600, 164, 25);
+		getContentPane().add(btnClear);
 		
 	}
 	

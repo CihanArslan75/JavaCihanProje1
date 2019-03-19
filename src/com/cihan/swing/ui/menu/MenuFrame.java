@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import com.cihan.swing.ui.excel.ProductExcel;
 import com.cihan.swing.ui.log.LogFrame;
+import com.cihan.swing.ui.order.OrderFrame;
 import com.cihan.swing.ui.product.ProductFrame;
 import com.cihan.swing.ui.product.ProductSave;
 import com.cihan.swing.ui.user.LoginFrame;
@@ -54,10 +55,10 @@ public class MenuFrame extends JFrame{
 		menuBar.setBounds(0, 0, 950, 26);
 		getContentPane().add(menuBar);
 		
-		JMenu mnProduct = new JMenu("Ürün ve Stok İşlemleri");
+		JMenu mnProduct = new JMenu("Ürün ve Stok İşlemleri  |");
 		menuBar.add(mnProduct);
 		
-		JMenuItem mntProduct = new JMenuItem("Ürün ve Stok Görüntüleme");
+		JMenuItem mntProduct = new JMenuItem("Ürün ve Stok İşlemleri");
 		mntProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProductFrame p=new ProductFrame();
@@ -77,7 +78,20 @@ public class MenuFrame extends JFrame{
 		});
 		mnProduct.add(mntProductEnter);
 		
-		JMenu mnUser = new JMenu("Kullanıcı İşlemleri");
+		JMenu mnSatIlemleri = new JMenu("Satış İşlemleri  |");
+		menuBar.add(mnSatIlemleri);
+		
+		JMenuItem mntmSatIlemleri = new JMenuItem("Satış İşlemleri");
+		mntmSatIlemleri.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OrderFrame p=new OrderFrame();
+				p.setVisible(true);
+				MenuFrame.this.setVisible(false);
+			}
+		});
+		mnSatIlemleri.add(mntmSatIlemleri);
+		
+		JMenu mnUser = new JMenu("Kullanıcı İşlemleri  |");
 		menuBar.add(mnUser);
 		
 		JMenuItem mntUser = new JMenuItem("Kullanıcı Görüntüleme ve Güncelleme");
@@ -100,7 +114,7 @@ public class MenuFrame extends JFrame{
 		});
 		mnUser.add(mntUserEnter);
 		
-		JMenu mnLog = new JMenu("Log İşlemleri");
+		JMenu mnLog = new JMenu("Log İşlemleri  |");
 		menuBar.add(mnLog);
 		
 		JMenuItem mntLog = new JMenuItem("Log Görüntüleme");

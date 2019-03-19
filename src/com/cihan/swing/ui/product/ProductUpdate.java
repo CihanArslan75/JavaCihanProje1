@@ -70,6 +70,7 @@ public class ProductUpdate extends JFrame {
 	private JTextField txtFinalPrize;
 	private Product product;
 	private ProductStock productStock ;
+	private  ProductImage productImage;
     private ProductDao productService=new ProductDao();
     private ProductStockDao productStockService=new ProductStockDao();
     private ProductImageDao productImageService=new ProductImageDao();
@@ -80,6 +81,7 @@ public class ProductUpdate extends JFrame {
 	private Integer productStockID;
 	private Product productList;
 	private ProductStock productStockList;
+	private List<ProductImage> productImageList;
 	
 	public ProductUpdate(Integer productID,Integer productStockID) {
 		this.productID=productID;
@@ -92,9 +94,10 @@ public class ProductUpdate extends JFrame {
 		getSizeCombo() ;
 		findProduct();
 		findProductStock();
+		findProductImage();
 		if(productList!=null) getProduct();
 		if(productStockList!=null) getProductStock();
-	
+		if(productImageList.size()>0) {  getProductImage();}
 	}
 	
 	private void InitializeProductSave() {
@@ -351,8 +354,6 @@ public class ProductUpdate extends JFrame {
 	}
 	
 	 private boolean productUpdateMaster(){
-		 product = new Product();
-		 product.setId(productID);
 		 if(cmbMarka.getSelectedItem()!=null) product.setProductMark((MarkaList) cmbMarka.getSelectedItem()); 
 		 if(txtProductName.getText()!=null)   product.setProductName(txtProductName.getText());	
 		 if(cmbType.getSelectedItem()!=null)  product.setProductType((ProductTypeList) cmbType.getSelectedItem());
@@ -365,11 +366,6 @@ public class ProductUpdate extends JFrame {
 	 }
 	 
 	 private boolean productStockUpdate(){
-			 ProductStock productStock = new ProductStock();
-			 productStock.setId(productStockID);
-			 Product product = new Product();
-			 product.setId(productID);
-			 productStock.setProduct(product);
 			 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
 			 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
 			 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	
@@ -400,27 +396,29 @@ public class ProductUpdate extends JFrame {
 		}); 
 	 }
 	 
-	 private boolean productImageSave() {
-		 ProductImage productImage = new ProductImage();
+ 
+	 protected boolean productImageSave() {
+		 productImage = new ProductImage();
 		 ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		 try {
 			ImageIO.write( img, "jpg", baos );
-			 //baos.flush();
+			 baos.flush();
 			 byte[] imageInByte = baos.toByteArray();
 			 baos.close();
-			 System.out.println("imageInByte:"+imageInByte);
 			 productImage.setProductImage(imageInByte);
+			 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 	
+		 		
 		 productImage.setProductStock(productStock);
 		 return productImageService.save(productImage); 
 	 }
 	
 	private Product findProduct() { 
-		productList=productService.findId(productID,new Product());
+		product = new Product();
+		product.setId(productID);
+		productList=productService.findId(productID,product);
 		if(productList!=null)
 		 return productList;
 		else
@@ -429,9 +427,23 @@ public class ProductUpdate extends JFrame {
 	}
 	
 	private ProductStock findProductStock() { 
-		productStockList=productStockService.findId(productStockID,new ProductStock());
+		productStock = new ProductStock();
+		productStock.setId(productStockID);
+		productStock.setProduct(product);
+		productStockList=productStockService.findId(productStockID,productStock);
 		if(productStockList!=null)
 		 return productStockList;
+		else
+		 return null;	
+		 
+	}
+	
+	private List<ProductImage> findProductImage() { 
+		productImage = new ProductImage();
+		productImage.setProductStock(productStock); 
+		productImageList=productImageService.searchIdAll(productImage);
+		if(productImageList!=null)
+		 return productImageList;
 		else
 		 return null;	
 		 
@@ -454,6 +466,16 @@ public class ProductUpdate extends JFrame {
 		txtSaleRate.setText(""+productStockList.getSaleRate());
 		txtFinalPrize.setText(""+productStockList.getFinalPrize());
 	}
+	
+	private void getProductImage() {
+		byte[] imageInByte= productImageList.get(0).getProductImage();
+		ImageIcon image = new ImageIcon(imageInByte);
+		lblImage.setIcon(image);
+
+
+	}
+	
+	
 }
 
 

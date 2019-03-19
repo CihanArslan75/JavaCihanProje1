@@ -27,7 +27,7 @@ public class ProductExcel {
 	private ProductDao productService=new ProductDao();
 	private  ProductStockDao productStockService=new ProductStockDao();
 		    
-	private static final String FILE_NAME = "C:\\Users\\Cihan\\Desktop\\Cihan\\UrunRaporu.xlsx";
+	private static final String FILE_NAME = "C:\\Users\\Cihan\\Desktop\\Cihan\\UrunListesi.xlsx";
 	private static String[] columns = {"NO","Marka","Ürün Tipi","Ürün Adı","Üretim Tarihi" ,"Ürün Stok NO","Renk","Ürün Beden","Ürün Adedi","Birim Fiyatı","İndirim Oranı (%)","Son Fiyat"};
     private String productName;
 	
@@ -61,19 +61,6 @@ public class ProductExcel {
             cell.setCellStyle(headerCellStyle);
         }
         
-//        int rowNum = 0;
-//        for (Object[] datatype : datatypes) {
-//            Row row = sheet.createRow(rowNum++);
-//            int colNum = 0;
-//            for (Object field : datatype) {
-//                Cell cell = row.createCell(colNum++);
-//                if (field instanceof String) {
-//                    cell.setCellValue((String) field);
-//                } else if (field instanceof Integer) {
-//                    cell.setCellValue((Integer) field);
-//                }
-//            }
-//        }
         
      // Create Cell Style for formatting Date
         CellStyle dateCellStyle = workbook.createCellStyle();

@@ -20,15 +20,15 @@ import org.hibernate.criterion.Restrictions;
  * @author Cihan
  */
 public class DatabaseBaseService<T> implements  IDatabase<T>{
-    private Session ss;
+	protected Session ss;
     private Transaction tt;
     
-    private void openSession(){
+    protected void openSession(){
         ss=hbUtil.getSessionFactory().openSession();
         tt= ss.beginTransaction();
     }
     
-    private void closeSession() {
+    protected void closeSession() {
         tt.commit();
         ss.close();
     }

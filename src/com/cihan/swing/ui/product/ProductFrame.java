@@ -12,7 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.cihan.swing.dao.product.ProductDao;
+import com.cihan.swing.dao.product.ProductOrderDao;
 import com.cihan.swing.dao.product.ProductStockDao;
+import com.cihan.swing.model.product.ProductOrder;
 import com.cihan.swing.model.product.Product;
 import com.cihan.swing.model.product.ProductStock;
 import com.cihan.swing.model.user.StateEnum;
@@ -52,12 +54,13 @@ public class ProductFrame extends JFrame{
     private JTable table2;
     private JTextField txtProductSearch;
     private List<Product> productList;
-    private JButton btnKaytIlemleri;
     private JButton btnExcel;
     private int productId;
     private int productStockId;
     private List<ProductStock> productStockList;
     private JComboBox cmbOrderCount ;
+    private ProductStock productStock1;
+    private Product product1;
     
     public ProductFrame() {
         urunInitialize();
@@ -161,6 +164,25 @@ public class ProductFrame extends JFrame{
 	scrollPane2.setColumnHeaderView(table2);
 	
 	JButton btnOrder = new JButton("SİPARİŞ VER");
+	btnOrder.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if(productStockList.size()<0)
+				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
+			else if(product1.getId()!=productStock1.getProduct().getId())
+				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
+			else
+			{
+				if(saveProductOrder()) 
+				{ getTableProductStock();
+					JOptionPane.showMessageDialog(ProductFrame.this, "Sipariş  İşlemi Başarılı");
+					
+				}
+				else
+					JOptionPane.showMessageDialog(ProductFrame.this, "Sipariş İşlemi Başarısız");
+				}
+			}
+
+	});
 	btnOrder.setBounds(314, 580, 164, 25);
 	getContentPane().add(btnOrder);
 	
@@ -185,7 +207,7 @@ public class ProductFrame extends JFrame{
 			else
 			{	
 			   
-				JOptionPane.showMessageDialog(ProductFrame.this, "Seçim Yapınız  !!");
+				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz !!");
 			}
 		}
 	});
@@ -274,6 +296,7 @@ public class ProductFrame extends JFrame{
 				@Override
 						public void valueChanged(ListSelectionEvent e) {
 							if (table1.getSelectedRow() > -1) {
+								product1=productList.get(table1.getSelectedRow() ); 
 								getTableProductStock();
 							 }
 						} 
@@ -286,7 +309,7 @@ public class ProductFrame extends JFrame{
 	private void getTableProductStock() {
 		int ii=table1.getSelectedRow() ;
 		productId =productList.get(ii).getId();
-	    ProductStock productStock =new ProductStock();
+		ProductStock productStock =new ProductStock();
 	    Product product =new Product();
 	    product.setState(StateEnum.NORMAL);
 	    product.setId(productId);
@@ -336,8 +359,8 @@ public class ProductFrame extends JFrame{
 						if (table2.getSelectedRow() > -1) {
 							int iii=table2.getSelectedRow() ;
 							productStockId =productStockList.get(iii).getId();
-							
-						 }
+							productStock1=productStockList.get(iii);  // update yaparken varolanı update et diğer column lar null olur. 
+							}
 					} 
 				 });
 			
@@ -345,7 +368,26 @@ public class ProductFrame extends JFrame{
 	
 	protected void getOrderCount() {
 		Integer[] score= {1,2,3,4,5,6,7,8,9,10};
-		cmbOrderCount.setModel(new DefaultComboBoxModel(score));
-		
+		cmbOrderCount.setModel(new DefaultComboBoxModel(score));	
 	}
+	
+	private boolean saveProductOrder() {
+		ProductOrder order = new ProductOrder();
+		ProductOrderDao orderService=new ProductOrderDao() ;
+		order.setOrderCount((Integer) cmbOrderCount.getSelectedItem());
+		order.setInsertDate(new Date());
+		order.setInsertUser(ProductUtil.user.getId());
+		order.setState(StateEnum.NORMAL);
+		order.setProductStock(productStock1);
+		ProductStockDao productStockService=new ProductStockDao();
+		int newCount=productStock1.getCount() - (Integer) cmbOrderCount.getSelectedItem() ;
+		productStock1.setCount(newCount);
+		productStock1.setUpdateDate(new Date());
+		productStock1.setUpdateUser(ProductUtil.user.getId());
+		productStockService.update(productStock1);
+	
+		return orderService.save(order);
+	}
+	
+	
 }

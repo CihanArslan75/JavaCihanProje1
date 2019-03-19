@@ -15,7 +15,7 @@
     <mapping class="com.cihan.swing.model.product.Product"/>
     <mapping class="com.cihan.swing.model.product.ProductStock"/>
     <mapping class="com.cihan.swing.model.product.ProductImage"/>
-      <mapping class="com.cihan.swing.model.product.Order"/>
+    <mapping class="com.cihan.swing.model.product.ProductOrder"/>
     
   </session-factory>
 </hibernate-configuration>

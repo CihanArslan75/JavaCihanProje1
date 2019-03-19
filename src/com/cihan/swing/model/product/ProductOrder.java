@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import com.cihan.swing.model.base.BaseEntity;
 
 @Entity
-@Table(name = "order")
-public class Order extends BaseEntity{
+@Table(name = "productorder")
+public class ProductOrder extends BaseEntity{
 	private Integer id;
 	private Integer orderCount;
 	private ProductStock productStock;

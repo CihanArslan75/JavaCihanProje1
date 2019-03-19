@@ -13,11 +13,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.engine.jdbc.BinaryStream;
 
 @Entity
 @Table(name = "productimage")
 public class ProductImage {
+	         
 	private Integer id;
 	private ProductStock productStock;
 	private byte[] productImage;
@@ -44,7 +44,8 @@ public class ProductImage {
 	}
 	
 	@Lob
-	@Column(name="productimage",  columnDefinition="mediumblob")
+	//@Column(name="productimage",  columnDefinition="mediumblob")
+	@Column(name="productimage")
 	public byte[] getProductImage() {
 		return productImage;
 	}
