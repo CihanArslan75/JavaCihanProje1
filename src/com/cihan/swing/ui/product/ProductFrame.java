@@ -166,7 +166,8 @@ public class ProductFrame extends JFrame{
 	JButton btnOrder = new JButton("SİPARİŞ VER");
 	btnOrder.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if(productStockList.size()<0)
+			System.out.println("productStockList.size():"+productStockList.size());
+			if(productStock1==null)
 				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
 			else if(product1.getId()!=productStock1.getProduct().getId())
 				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
