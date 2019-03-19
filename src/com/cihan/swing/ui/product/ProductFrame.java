@@ -166,7 +166,7 @@ public class ProductFrame extends JFrame{
 	JButton btnOrder = new JButton("SİPARİŞ VER");
 	btnOrder.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("productStockList.size():"+productStockList.size());
+			
 			if(productStock1==null)
 				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
 			else if(product1.getId()!=productStock1.getProduct().getId())
@@ -200,16 +200,17 @@ public class ProductFrame extends JFrame{
 	btnUpdate.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 						
-			if( productId>0   &&  productStockId>0) {
+			if(productStock1==null)
+				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
+			else if(product1.getId()!=productStock1.getProduct().getId())
+				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz ");
+			else
+			{
 			    ProductUpdate m=new ProductUpdate(productId,productStockId );
 				m.setVisible(true);
-				ProductFrame.this.setVisible(false);
+				//ProductFrame.this.setVisible(false);
 			}
-			else
-			{	
-			   
-				JOptionPane.showMessageDialog(ProductFrame.this, "Önce Ürün Stok Detayı Seçiniz !!");
-			}
+			
 		}
 	});
 	btnUpdate.setBounds(559, 580, 164, 25);

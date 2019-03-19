@@ -236,6 +236,8 @@ public class ProductSave extends JFrame {
 				    	txtUnitPrize.setText("");
 				    	JOptionPane.showMessageDialog(ProductSave.this, "Birim Fiyatı Alanını Sayısal Olarak Giriniz !");
 				    }
+				 if(txtSaleRate.getText()!=null && txtFinalPrize!=null)  txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText(txtUnitPrize.getText());
 			}
 		});
 		txtUnitPrize.setBounds(500, 40, 180, 22);
@@ -258,8 +260,8 @@ public class ProductSave extends JFrame {
 				    	
 				    }
 				
-				 if(txtSaleRate.getText()!=null) txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
-				 else txtFinalPrize.setText("");
+				 if(txtSaleRate.getText()!=null && txtFinalPrize!=null)  txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText(txtUnitPrize.getText());
 			}
 		});
 		

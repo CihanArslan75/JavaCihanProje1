@@ -209,6 +209,8 @@ public class ProductUpdate extends JFrame {
 				    	txtUnitPrize.setText("");
 				    	JOptionPane.showMessageDialog(ProductUpdate.this, "Birim Fiyatı Alanını Sayısal Olarak Giriniz !");
 				    }
+				 if(txtSaleRate.getText()!=null && txtFinalPrize!=null) txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText(txtUnitPrize.getText());
 			}
 		});
 		txtUnitPrize.setBounds(500, 48, 180, 22);
@@ -294,8 +296,8 @@ public class ProductUpdate extends JFrame {
 				    	txtSaleRate.setText("");
 				    	JOptionPane.showMessageDialog(ProductUpdate.this, "İndirim Oranı Alanını Sayısal Olarak Giriniz !.");
 				    }
-				 if(txtSaleRate.getText()!=null) txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
-				 else txtFinalPrize.setText("");
+				 if(txtSaleRate.getText()!=null && txtFinalPrize!=null)  txtFinalPrize.setText(String.valueOf(  Integer.parseInt(txtUnitPrize.getText())- ((Integer.parseInt(txtSaleRate.getText())*Integer.parseInt(txtUnitPrize.getText()))/100)));
+				 else txtFinalPrize.setText(txtUnitPrize.getText());
 			}
 		});
 		
@@ -329,8 +331,8 @@ public class ProductUpdate extends JFrame {
 		JButton btnNewButton_1 = new JButton("ÜRÜN LİSTESİNE DÖN");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProductFrame m=new ProductFrame();
-				m.setVisible(true);
+				//ProductFrame m=new ProductFrame();
+				//m.setVisible(true);
 				ProductUpdate.this.setVisible(false);
 			}
 		});
