@@ -3,6 +3,7 @@ package com.cihan.swing.ui.menu;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.cihan.swing.model.user.Role;
 import com.cihan.swing.ui.excel.ProductExcel;
 import com.cihan.swing.ui.log.LogFrame;
 import com.cihan.swing.ui.order.OrderFrame;
@@ -25,8 +26,16 @@ import java.awt.Font;
 import java.awt.Color;
 
 public class MenuFrame extends JFrame{
+	private JMenuBar menuBar ;
+	
 	public MenuFrame() {
 		initializeMenuFrame();
+		
+		if(ProductUtil.user.getRol().equals(Role.ADMIN))
+		{
+			initialiazeAdmin();
+	    }
+
 	}
 	private void initializeMenuFrame() {
 		setTitle("MENÜ");
@@ -51,7 +60,7 @@ public class MenuFrame extends JFrame{
 		lblNewLabel.setBounds(106, 146, 450, 40);
 		panel.add(lblNewLabel);
 		
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 950, 26);
 		getContentPane().add(menuBar);
 		
@@ -90,54 +99,6 @@ public class MenuFrame extends JFrame{
 			}
 		});
 		mnSatIlemleri.add(mntmSatIlemleri);
-		
-		JMenu mnUser = new JMenu("Kullanıcı İşlemleri  |");
-		menuBar.add(mnUser);
-		
-		JMenuItem mntUser = new JMenuItem("Kullanıcı Görüntüleme ve Güncelleme");
-		mntUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UserFrame p=new UserFrame();
-				p.setVisible(true);
-				MenuFrame.this.setVisible(false);
-			}
-		});
-		mnUser.add(mntUser);
-		
-		JMenuItem mntUserEnter = new JMenuItem("Kullanıcı Girişi");
-		mntUserEnter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UserEnterFrame p=new UserEnterFrame();
-				p.setVisible(true);
-				MenuFrame.this.setVisible(false);
-			}
-		});
-		mnUser.add(mntUserEnter);
-		
-		JMenu mnLog = new JMenu("Log İşlemleri  |");
-		menuBar.add(mnLog);
-		
-		JMenuItem mntLog = new JMenuItem("Log Görüntüleme");
-		mntLog.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				LogFrame p=new LogFrame();
-				p.setVisible(true);
-				MenuFrame.this.setVisible(false);
-			}
-		});
-		mnLog.add(mntLog);
-		
-//		JButton btnProductMenu = new JButton("ÜRÜN İŞLEMLERİ");
-//		btnProductMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				ProductFrame p=new ProductFrame();
-//				p.setVisible(true);
-//				MenuFrame.this.setVisible(false);
-//			}
-//		});
-//		btnProductMenu.setBounds(90, 140, 300, 25);
-//		panel.add(btnProductMenu);
-		
 		JButton btnExit = new JButton("MENÜDEN ÇIK");
 		btnExit.setBounds(494, 494, 254, 25);
 		getContentPane().add(btnExit);
@@ -147,4 +108,42 @@ public class MenuFrame extends JFrame{
 			}
 		});
 	}
+	
+	private void initialiazeAdmin() {
+	JMenu mnUser = new JMenu("Kullanıcı İşlemleri  |");
+	menuBar.add(mnUser);
+	
+	JMenuItem mntUser = new JMenuItem("Kullanıcı Görüntüleme ve Güncelleme");
+	mntUser.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			UserFrame p=new UserFrame();
+			p.setVisible(true);
+			MenuFrame.this.setVisible(false);
+		}
+	});
+	mnUser.add(mntUser);
+	
+	JMenuItem mntUserEnter = new JMenuItem("Kullanıcı Girişi");
+	mntUserEnter.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			UserEnterFrame p=new UserEnterFrame();
+			p.setVisible(true);
+			MenuFrame.this.setVisible(false);
+		}
+	});
+	mnUser.add(mntUserEnter);
+	
+	JMenu mnLog = new JMenu("Log İşlemleri  |");
+	menuBar.add(mnLog);
+	
+	JMenuItem mntLog = new JMenuItem("Log Görüntüleme");
+	mntLog.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			LogFrame p=new LogFrame();
+			p.setVisible(true);
+			MenuFrame.this.setVisible(false);
+		}
+	});
+	mnLog.add(mntLog);
+}
 }

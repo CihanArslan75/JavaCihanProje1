@@ -5,7 +5,6 @@ import com.cihan.swing.model.user.User;
 
 public class ProductUtil {
 	public static User user;
-	public static Role userRole=null;
 	public static int saleRate=10;
 	public static int x1=100;
 	public static int y1=100;

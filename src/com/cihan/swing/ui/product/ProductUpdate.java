@@ -205,6 +205,7 @@ public class ProductUpdate extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				 try {
 				      int  x = Integer.parseInt(txtUnitPrize.getText());
+				      txtSaleRate.setText("0");
 				    } catch (NumberFormatException nfe) {
 				    	txtUnitPrize.setText("");
 				    	JOptionPane.showMessageDialog(ProductUpdate.this, "Birim Fiyatı Alanını Sayısal Olarak Giriniz !");
@@ -232,16 +233,27 @@ public class ProductUpdate extends JFrame {
 		JButton btnStockSave = new JButton("STOK GÜNCELLE");
 		btnStockSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(productStockUpdate()) 
-				{
-					if(img!=null) productImageSave(); 
-					
-				   	JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelle İşlemi Başarılı");
-					
+			try {
+				productStockUpdate();
+				if(img!=null) 
+				{  
+					productImageSave();
+					JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelleme İşlemi Başarılı");
 				}
 				else
-					JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelle İşlemi Başarısız");
-			}
+				{
+					
+					JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelleme İşlemi Başarılı");
+				}
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(ProductUpdate.this, "Adet ve Birim Fiyatını  Giriniz ! ");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(ProductUpdate.this, "Stok Güncelleme İşlemi Başarısız  !!!!!!!! ");
+			}	
+		}
+		
 		});
 		btnStockSave.setBounds(500, 178, 180, 25);
 		panel_2.add(btnStockSave);
@@ -367,7 +379,7 @@ public class ProductUpdate extends JFrame {
 		 return productService.update(product); 
 	 }
 	 
-	 private boolean productStockUpdate(){
+	 private boolean productStockUpdate()  throws Exception{
 			 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
 			 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
 			 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	

@@ -24,8 +24,8 @@ public class ProductImage {
 	
 		
 	@Id
-	@SequenceGenerator(name = "seq_product", allocationSize = 1, sequenceName = "seq_product")
-	@GeneratedValue(generator = "seq_product", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "seq_productimage", allocationSize = 1, sequenceName = "seq_productimage")
+	@GeneratedValue(generator = "seq_productimage", strategy = GenerationType.SEQUENCE)
 	public Integer getId() {
 		return id;
 	}

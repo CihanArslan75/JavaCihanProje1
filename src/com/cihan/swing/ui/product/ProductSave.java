@@ -230,8 +230,7 @@ public class ProductSave extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				 try {
 				      int  x = Integer.parseInt(txtUnitPrize.getText());
-				      
-					
+				      txtSaleRate.setText("0");
 				    } catch (NumberFormatException nfe) {
 				    	txtUnitPrize.setText("");
 				    	JOptionPane.showMessageDialog(ProductSave.this, "Birim Fiyatı Alanını Sayısal Olarak Giriniz !");
@@ -302,18 +301,28 @@ public class ProductSave extends JFrame {
 		JButton btnStockSave = new JButton("STOK KAYIT");
 		btnStockSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(productStockSave()) 
-				{
+				try {
+					productStockSave();
 					if(img!=null) 
 					{  
-						productImageSave();
+						productImageSave();	
+						getTableProductStock() ;
+						JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
 					}
-				    getTableProductStock() ;
-					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
-					
-				}
-				else
-					JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarısız");
+					else
+					{
+						getTableProductStock() ;
+						JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarılı");
+					}
+				} 
+				catch (NumberFormatException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(ProductSave.this, "Adet ve Birim Fiyatını  Giriniz ! ");
+				}	
+				catch (Exception e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(ProductSave.this, "Stok Kayıt İşlemi Başarısız !!!!!!!! ");	
+			}
 			}
 		});
 		btnStockSave.setBounds(500, 178, 180, 25);
@@ -454,8 +463,8 @@ public class ProductSave extends JFrame {
 		 return productService.save(product); 
 	 }
 	 
-	 protected boolean productStockSave() {
-		  if(product==null) {
+	 protected boolean productStockSave() throws Exception{
+			 if(product==null) {
 				 JOptionPane.showMessageDialog(ProductSave.this, "Önce Ürünü Kayıt ediniz. ");
 			 }
 			 else
@@ -463,7 +472,7 @@ public class ProductSave extends JFrame {
 				 productStock = new ProductStock();
 				 if(cmbColor.getSelectedItem()!=null) productStock.setProductColor((ColorList) cmbColor.getSelectedItem()); 
 				 if(cmbSizeNo.getSelectedItem()!=null)   productStock.setSizeList((SizeList) cmbSizeNo.getSelectedItem());	
-				 if(txtCount.getText()!=null)   productStock.setCount(Integer.parseInt(txtCount.getText()));	
+				 if(txtCount.getText()!=null )   productStock.setCount(Integer.parseInt(txtCount.getText()));	
 				 if(txtUnitPrize.getText()!=null)   productStock.setUnitPrize(Integer.parseInt(txtUnitPrize.getText()));	
 				 if(txtSaleRate.getText()!=null)   productStock.setSaleRate(Integer.parseInt(txtSaleRate.getText()));	
 				 if(txtFinalPrize.getText()!=null)   productStock.setFinalPrize(Integer.parseInt(txtFinalPrize.getText()));	
@@ -471,7 +480,8 @@ public class ProductSave extends JFrame {
 				 productStock.setInsertDate(new Date());
 				 productStock.setInsertUser(ProductUtil.user.getId());
 				 productStock.setState(StateEnum.NORMAL);
-				 }
+			 }
+	
 			 
 			 return productStockService.save(productStock); 
 	 }

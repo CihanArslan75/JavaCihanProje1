@@ -73,7 +73,7 @@ public class LoginFrame extends JFrame {
 		panel.add(btnEnter);
 		btnEnter.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			 System.out.println("aaa:"+txtUsername.getText());
+			
 			 if(txtUsername.getText().equals("") || txtUsername.getText()==null  || txtPassword.getText().equals("") ) {
 				 JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Adı veya Şifre Boş olamaz !!");
 			 }
@@ -83,7 +83,7 @@ public class LoginFrame extends JFrame {
 			 List<User> user = null;
 			 try {
 				user = userService.search("username",txtUsername.getText(),new User());
-				System.out.println("bbbbb:"+user);
+			
 			    if(user==null ) {
 			    	JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı Yok !!");
 					 
@@ -95,11 +95,12 @@ public class LoginFrame extends JFrame {
 						 JOptionPane.showMessageDialog(LoginFrame.this, "Şifre Yanlış !!");
 					 }
 					 else {
-						
+						 ProductUtil.user=user.get(0);
 						 MenuFrame menuFrame=new MenuFrame();
 						 menuFrame.setVisible(true);
 						 LoginFrame.this.setVisible(false);
-						 ProductUtil.user=user.get(0);
+						
+						
 						 }
 				
 				 }
@@ -117,6 +118,7 @@ public class LoginFrame extends JFrame {
 					 userAdmin.setState(StateEnum.NORMAL);
 					 userAdmin.setRol(Role.ADMIN);
 					 userService.save(userAdmin);
+					 ProductUtil.user=user.get(0);
 					 MenuFrame menuFrame=new MenuFrame();
 					 menuFrame.setVisible(true);
 					 LoginFrame.this.setVisible(false);
@@ -126,8 +128,7 @@ public class LoginFrame extends JFrame {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					 ProductUtil.user=user.get(0);
-					
+
 				 }
 				 else
 				 {
