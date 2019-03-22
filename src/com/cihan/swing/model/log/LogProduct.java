@@ -22,9 +22,6 @@ public class LogProduct {
 	private Date logDate ;
     private User user;
     
-	public LogProduct() {
-		
-	}
 	
 	@Id
 	@SequenceGenerator(name = "seq_log", allocationSize = 1, sequenceName = "seq_log")

@@ -24,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.JTextField;
 
 public class MenuFrame extends JFrame{
 	private JMenuBar menuBar ;
@@ -51,7 +52,7 @@ public class MenuFrame extends JFrame{
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(41, 25, 688, 377);
+		panel.setBounds(41, 50, 688, 352);
 		panel_1.add(panel);
 		panel.setLayout(null);
 		
@@ -59,6 +60,20 @@ public class MenuFrame extends JFrame{
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		lblNewLabel.setBounds(106, 146, 450, 40);
 		panel.add(lblNewLabel);
+		
+		JLabel lblUser = new JLabel("");
+		lblUser.setBounds(65, 10, 155, 30);
+		panel_1.add(lblUser);
+		lblUser.setForeground(Color.WHITE);
+		lblUser.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblUser.setText(ProductUtil.user.getUsername());
+		
+		JLabel lblRole = new JLabel("");
+		lblRole.setBounds(253, 10, 190, 30);
+		panel_1.add(lblRole);
+		lblRole.setForeground(Color.WHITE);
+		lblRole.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblRole.setText(""+ProductUtil.user.getRol());
 		
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 950, 26);

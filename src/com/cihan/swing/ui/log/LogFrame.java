@@ -122,6 +122,8 @@ public class LogFrame extends JFrame{
 	
 	private void getTable() {
 		if(dateLog1.getDate()!=null && dateLog2.getDate()!=null) {
+			System.out.println("dateLog1.getDate():"+dateLog1.getDate());
+			System.out.println("dateLog2.getDate():"+dateLog2.getDate());
 			logList=logServis.searchDate("logDate",dateLog1.getDate(),dateLog2.getDate(),new LogProduct());
 		}
 		else
@@ -134,7 +136,7 @@ public class LogFrame extends JFrame{
 		for (int i = 0; i < logList.size(); i++) {
 			sayi++;
 			    data[i][0] = ""+sayi; 
-  		  if(logList.get(i).getUser().getUsername()!=null) 
+  		  if(logList.get(i).getUser()!=null) 
 				data[i][1] = logList.get(i).getUser().getUsername(); 
 			else 
 				data[i][1]=null;
